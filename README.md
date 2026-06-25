@@ -1,10 +1,11 @@
 # Project: [ชื่อโปรเจกต์ของคุณ]
 _A brief, one-sentence description of what your project does._
 
-## Team: [ชื่อทีมของคุณ]
-- [ชื่อ-นามสกุล], GitHub: `[github_username]`
-- [ชื่อ-นามสกุล], GitHub: `[github_username]`
-- [ชื่อ-นามสกุล], GitHub: `[github_username]`
+## Team: [DaybyDay]
+- [ธนภัทร เอี่ยมสอาด], GitHub: `[@Thanapat2103]`
+- [อริญชัย ปิ่นทอง], GitHub: `[@Arinchai11]`
+- [สลิลทิพย์ ดอกนางแย้ม], GitHub: `[@salintip-ops]`
+- [คชภัค เสนาน้อย], GitHub: `[@Gun67025976]`
 
 ---
 
