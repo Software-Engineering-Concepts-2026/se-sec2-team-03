@@ -1,6 +1,6 @@
 # Persona: “อิศรา ” – นักศึกษาอีคอมเมิร์ซ (Student)
-![Pesona1](img/Image%20.jpg)
 
+![Pesona2](img/Image.jpg)
 
 
 ---
