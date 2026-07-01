@@ -1,6 +1,6 @@
 # Persona: “กิตติศักดิ์ ” – พนักงานออฟฟิศระดับกลาง (Employee)
 
-![Pesona1](img\Image (1).jpg)
+![Pesona1](img/Image%20(1).jpg)
 
 
 ---
