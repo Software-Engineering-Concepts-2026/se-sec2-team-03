@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker Dashboard</title>
+    <link rel="stylesheet" href="Thanapat_RecordExpenses_style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar left-sidebar">
+        <div class="brand">
+          <div class="brand-icon">💸</div>
+          <div>
+            <h1>Expense</h1>
+            <p>Tracker</p>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a class="nav-item" href="#">👤 โปรไฟล์</a>
+          <a class="nav-item active" href="#">📊 สรุปผล</a>
+          <a class="nav-item" href="#">🧾 รายการล่าสุด</a>
+          <a class="nav-item" href="#">➕ เพิ่มรายจ่าย</a>
+          <a class="nav-item" href="#">⚙️ ตั้งค่า</a>
+        </nav>
+      </aside>
+
+      <main class="main-panel">
+        <section class="hero-card">
+          <div class="hero-top">
+            <p>ยอดรายจ่ายเดือนนี้</p>
+            <span>กรกฎาคม 2026</span>
+          </div>
+          <h2 id='totalExpense'>฿ 12,500.00</h2>
+        </section>
+
+        <section class="summary-card">
+          <div class="section-title">
+            <h3>สรุปหมวดหมู่</h3>
+            <span>เดือนนี้</span>
+          </div>
+
+          <div class="chart">
+            <div class="bar-group">
+              <div class="bar food" style="height: 72%"></div>
+              <span>อาหาร</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar travel" style="height: 54%"></div>
+              <span>เดินทาง</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar shopping" style="height: 63%"></div>
+              <span>ช้อปปิ้ง</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar other" style="height: 38%"></div>
+              <span>อื่นๆ</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar home" style="height: 44%"></div>
+              <span>บ้าน</span>
+            </div>
+            <div class="bar-group">
+              <div class="bar fun" style="height: 58%"></div>
+              <span>บันเทิง</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="history-card">
+          <div class="section-title">
+            <h3>รายการล่าสุด</h3>
+            <a href="#">ดูทั้งหมด</a>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>รายการ</th>
+                <th>หมวดหมู่</th>
+                <th>จำนวนเงิน</th>
+              </tr>
+            </thead>
+            <tbody id='historyBody'>
+              <tr>
+                <td>วันนี้</td>
+                <td>ค่าข้าวเที่ยง</td>
+                <td>อาหาร</td>
+                <td class="amount negative">-฿ 85.00</td>
+              </tr>
+              <tr>
+                <td>เมื่อวาน</td>
+                <td>ค่าโดยสาร BTS</td>
+                <td>เดินทาง</td>
+                <td class="amount negative">-฿ 45.00</td>
+              </tr>
+              <tr>
+                <td>2 วันก่อน</td>
+                <td>ซื้ออุปกรณ์</td>
+                <td>ช้อปปิ้ง</td>
+                <td class="amount negative">-฿ 320.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+
+      <aside class="sidebar right-sidebar">
+        <div class="form-toolbar">
+          <button class="ghost-btn">✕ ยกเลิก</button>
+          <button class="primary-btn">✓ บันทึก</button>
+        </div>
+
+        <label class="field">
+          <span>จำนวนเงิน (฿)</span>
+          <input id="amountInput" type="text" value="0.00" inputmode="decimal" />
+        </label>
+
+        <div class="category-section">
+          <span>หมวดหมู่</span>
+          <div class="category-grid" id="categoryGrid">
+            <button class="chip active">🍽️ อาหาร</button>
+            <button class="chip">🚇 เดินทาง</button>
+            <button class="chip">🛍️ ช้อปปิ้ง</button>
+            <button class="chip">🏠 บ้าน</button>
+            <button class="chip">🎬 บันเทิง</button>
+            <button class="chip">📦 อื่นๆ</button>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>วันที่</span>
+          <input type="date" value="2026-07-08" />
+        </label>
+
+        <label class="field">
+          <span>บันทึก</span>
+          <textarea placeholder="ค่าข้าวเที่ยง"></textarea>
+        </label>
+
+        <div class="keypad">
+          <button class="keypad-btn" data-value="1">1</button>
+          <button class="keypad-btn" data-value="2">2</button>
+          <button class="keypad-btn" data-value="3">3</button>
+          <button class="keypad-btn" data-value="4">4</button>
+          <button class="keypad-btn" data-value="5">5</button>
+          <button class="keypad-btn" data-value="6">6</button>
+          <button class="keypad-btn" data-value="7">7</button>
+          <button class="keypad-btn" data-value="8">8</button>
+          <button class="keypad-btn" data-value="9">9</button>
+          <button class="keypad-btn" data-value=".">.</button>
+          <button class="keypad-btn" data-value="0">0</button>
+          <button class="keypad-btn delete" data-action="backspace">⌫</button>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+const amountInput=document.getElementById('amountInput');
+const dateInput=document.querySelector('input[type="date"]');
+const noteInput=document.querySelector('textarea');
+const saveBtn=document.querySelector('.primary-btn');
+const cancelBtn=document.querySelector('.ghost-btn');
+const total=document.getElementById('totalExpense');
+const tbody=document.getElementById('historyBody');
+dateInput.valueAsDate=new Date();
+let totalValue=12500;
+const catTotals={อาหาร:72,เดินทาง:54,ช้อปปิ้ง:63,บ้าน:44,บันเทิง:58,"อื่นๆ":38};
+
+document.querySelectorAll('.chip').forEach(c=>c.onclick=e=>{e.preventDefault();document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');});
+
+document.querySelectorAll('.keypad-btn').forEach(b=>b.onclick=()=>{const a=b.dataset.action,v=b.dataset.value;if(a==='backspace'){amountInput.value=amountInput.value.slice(0,-1)||'0.00';return;}if(!v)return;let cur=amountInput.value==='0.00'?'':amountInput.value.replace(/[^0-9.]/g,'');amountInput.value=cur+v;});
+
+saveBtn.onclick=e=>{
+e.preventDefault();
+if(amountInput.value==='0.00'||noteInput.value.trim()===''||dateInput.value===''){alert('กรุณากรอกข้อมูลให้ครบ');return;}
+const amt=parseFloat(amountInput.value); if(isNaN(amt)||amt<=0){alert('จำนวนเงินไม่ถูกต้อง');return;}
+const cat=document.querySelector('.chip.active').textContent.replace(/^[^ ]+ /,'');
+const tr=document.createElement('tr');
+tr.innerHTML=`<td>วันนี้</td><td>${noteInput.value}</td><td>${cat}</td><td class="amount negative">-฿ ${amt.toFixed(2)}</td>`;
+tbody.prepend(tr);
+totalValue+=amt;
+total.textContent='฿ '+totalValue.toLocaleString('en-US',{minimumFractionDigits:2});
+const cls={อาหาร:'food',เดินทาง:'travel',ช้อปปิ้ง:'shopping',บ้าน:'home',บันเทิง:'fun','อื่นๆ':'other'}[cat];
+const bar=document.querySelector('.bar.'+cls);
+if(bar){let h=parseInt(bar.style.height)||catTotals[cat];h=Math.min(h+5,100);bar.style.height=h+'%';}
+localStorage.setItem('expenseTable',tbody.innerHTML);
+localStorage.setItem('expenseTotal',totalValue);
+alert('บันทึกสำเร็จ');
+amountInput.value='0.00';noteInput.value='';
+};
+cancelBtn.onclick=()=>{amountInput.value='0.00';noteInput.value='';dateInput.valueAsDate=new Date();}
+const st=localStorage.getItem('expenseTable');if(st)tbody.innerHTML=st;
+const sv=localStorage.getItem('expenseTotal');if(sv){totalValue=parseFloat(sv);total.textContent='฿ '+totalValue.toLocaleString('en-US',{minimumFractionDigits:2});}
+</script>
+  </body>
+</html>
+  
