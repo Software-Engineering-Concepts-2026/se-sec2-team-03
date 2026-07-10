@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life & Finance Dashboard - Arinchai Feature</title>
+    <link rel="stylesheet" href="Arinchai_dashboard_style.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">DaybyDay</div>
+            <nav>
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Health</a>
+                <a href="#">Tasks</a>
+                <a href="#">Finance</a>
+                <a href="#">Account</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Main Header -->
+            <header class="main-header">
+                <h2>Welcome Back, Arinchai</h2>
+                <div class="header-right">
+                    <span class="date">Oct 26, 2023</span>
+                    <div class="profile-icon">👤</div>
+                </div>
+            </header>
+
+            <!-- Content Grid (Top Row) -->
+            <div class="grid-container">
+                <!-- Card 1: Health Status -->
+                <div class="card health-card">
+                    <h3>Health Status</h3>
+                    <div class="metric">🏃 Steps: <span id="steps-val">8,432</span></div>
+                    <div class="metric">🌙 Sleep: <span>7.5 hrs</span></div>
+                </div>
+
+                <!-- Card 2: Daily Tasks -->
+                <div class="card tasks-card">
+                    <h3>Daily Tasks</h3>
+                    <label><input type="checkbox"> Review project board</label><br>
+                    <label><input type="checkbox"> Call Sarah (Health)</label><br>
+                    <label><input type="checkbox"> Submit sprint report</label>
+                </div>
+
+                <!-- Card 3: Financial Snapshot -->
+                <div class="card finance-card">
+                    <h3>Financial Snapshot</h3>
+                    <div class="balance">Current Balance: <strong>฿21,432</strong></div>
+                    <div class="income">Today's Income: <span class="text-green">฿1,200</span></div>
+                    <div class="expense">Today's Expense: <span class="text-red">฿350</span></div>
+                    <select class="metric-dropdown">
+                        <option>Add Health Metric</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Content Grid (Middle Row) -->
+            <div class="grid-container middle-row">
+                <!-- Card 4: Weekly Finance Trend -->
+                <div class="card chart-card">
+                    <h3>Weekly Finance Trend</h3>
+                    <div class="chart-placeholder">
+                        <div class="mock-line-income"></div>
+                        <div class="mock-line-expense"></div>
+                        <span style="color: #888; font-size: 14px;">[ Multidimensional Chart: Income (Green) vs Expenses (Red) ]</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: Quick Financial Log -->
+                <div class="card log-card">
+                    <h3>Quick Financial Log</h3>
+                    <div class="form-group">
+                        <label for="amount">Log Transaction Amount (฿)</label>
+                        <input type="number" id="amount" placeholder="e.g., 500">
+                    </div>
+                    <div class="form-group">
+                        <label>Type: </label>
+                        <label><input type="radio" name="trans-type" value="income" checked> Income</label>
+                        <label><input type="radio" name="trans-type" value="expense"> Expense</label>
+                    </div>
+                    <button id="add-log-btn" class="btn-primary">Add Log</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Client-side Interactivity Script -->
+    <script>
+        document.getElementById('add-log-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const amountInput = document.getElementById('amount').value;
+            const typeInput = document.querySelector('input[name="trans-type"]:checked').value;
+
+            if (!amountInput || isNaN(amountInput) || Number(amountInput) <= 0) {
+                alert('Please enter a valid amount!');
+                return;
+            }
+
+            alert(`Success! Logged ${typeInput} of ฿${amountInput} to your summary (This is a prototype)`);
+            document.getElementById('amount').value = '';
+        });
+    </script>
+</body>
+</html>
