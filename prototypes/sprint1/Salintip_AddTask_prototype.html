@@ -1,0 +1,113 @@
+<!--
+  A centered card for creating a new work/task.
+
+  Layout:
+  - A top navigation bar with a back arrow and the title "Add work".
+  - A text input field labeled "Task" for entering the task name.
+  - A large textarea labeled "Descriptions" for additional task details.
+  - A date picker labeled "Date".
+  - A time picker labeled "Time".
+  - A dropdown selection labeled "Category" for choosing the task category.
+  - A "Level of importance" section with three radio button options:
+      - Low
+      - Medium
+      - High
+  - Two action buttons at the bottom:
+      - "Save" to save the task.
+      - "Cancel" to discard the changes.
+-->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task Prototype</title>
+
+    <link rel="stylesheet" href="Salintip_AddTask_style.css">
+</head>
+
+<body>
+
+<div class="card">
+    <div class="card-header">
+        <button class="back-button" onclick="goBack()">&#8592;</button>
+        <h2>Add work</h2>
+    </div>
+
+    <div class="card-body">
+        <label for="task">Task</label>
+        <input type="text" id="task" name="task" placeholder="Enter task name">
+
+        <label for="description">Descriptions</label>
+        <textarea id="description" name="description" placeholder="Enter task details"></textarea>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date">
+
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time">
+
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            <option value="">Select category</option>
+            <option value="work">Work</option>
+            <option value="personal">Personal</option>
+            <option value="other">Other</option>
+        </select>
+
+        <fieldset>
+            <legend>Level of importance</legend>
+            <label><input type="radio" name="importance" value="low"> Low</label>
+            <label><input type="radio" name="importance" value="medium"> Medium</label>
+            <label><input type="radio" name="importance" value="high"> High</label>
+        </fieldset>
+
+        <div class="action-buttons">
+            <button class="save-button" onclick="saveTask(event)">Save</button>
+            <button class="cancel-button" onclick="cancelTask()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function saveTask(event) {
+    // Prevent default action
+    event.preventDefault();
+
+    // Get values
+    const task = document.getElementById("task").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const category = document.getElementById("category").value;
+    const importance = document.querySelector('input[name="importance"]:checked');
+
+    // Check empty fields
+    if (
+        task === "" ||
+        description === "" ||
+        date === "" ||
+        time === "" ||
+        category === "" ||
+        !importance
+    ) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    alert("Task saved successfully! (This is a prototype)");
+}
+
+function cancelTask() {
+    if (confirm("Are you sure you want to cancel?")) {
+        window.history.back();
+    }
+}
+
+function goBack() {
+    window.history.back();
+}
+</script>
+
+</body>
+</html>
