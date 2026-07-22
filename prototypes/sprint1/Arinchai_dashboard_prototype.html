@@ -1,110 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life & Finance Dashboard - Arinchai Feature</title>
-    <link rel="stylesheet" href="Arinchai_dashboard_style.css">
-</head>
-<body>
-    <div class="dashboard-wrapper">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="logo">DaybyDay</div>
-            <nav>
-                <a href="#" class="active">Dashboard</a>
-                <a href="#">Health</a>
-                <a href="#">Tasks</a>
-                <a href="#">Finance</a>
-                <a href="#">Account</a>
-            </nav>
-        </aside>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life & Finance Dashboard - Arinchai</title>
+    <link rel="stylesheet" href="Arinchai_dashboard_style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      
+      <!-- แถบเมนูด้านซ้าย (Left Sidebar) -->
+      <aside class="sidebar left-sidebar">
+        <div class="brand">
+          <div class="brand-icon">📅</div>
+          <div>
+            <h1>DaybyDay</h1>
+          </div>
+        </div>
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- Main Header -->
-            <header class="main-header">
-                <h2>Welcome Back, Arinchai</h2>
-                <div class="header-right">
-                    <span class="date">Oct 26, 2023</span>
-                    <div class="profile-icon">👤</div>
-                </div>
-            </header>
+        <nav class="nav-links">
+          <a class="nav-item active" href="#">📊 Dashboard</a>
+          <a class="nav-item" href="#">🏃 Health</a>
+          <a class="nav-item" href="#">✅ Tasks</a>
+          <a class="nav-item" href="#">💰 Finance</a>
+          <a class="nav-item" href="#">👤 Account</a>
+        </nav>
+      </aside>
 
-            <!-- Content Grid (Top Row) -->
-            <div class="grid-container">
-                <!-- Card 1: Health Status -->
-                <div class="card health-card">
-                    <h3>Health Status</h3>
-                    <div class="metric">🏃 Steps: <span id="steps-val">8,432</span></div>
-                    <div class="metric">🌙 Sleep: <span>7.5 hrs</span></div>
-                </div>
+      <!-- พื้นที่เนื้อหาหลัก (Main Panel) -->
+      <main class="main-panel">
+        
+        <!-- การ์ดส่วนหัว (Hero Card) -->
+        <section class="hero-card">
+          <div class="hero-top">
+            <p>Welcome Back, Arinchai</p>
+            <span>Oct 26, 2023</span>
+          </div>
+          <h2>Dashboard Overview</h2>
+        </section>
 
-                <!-- Card 2: Daily Tasks -->
-                <div class="card tasks-card">
-                    <h3>Daily Tasks</h3>
-                    <label><input type="checkbox"> Review project board</label><br>
-                    <label><input type="checkbox"> Call Sarah (Health)</label><br>
-                    <label><input type="checkbox"> Submit sprint report</label>
-                </div>
-
-                <!-- Card 3: Financial Snapshot -->
-                <div class="card finance-card">
-                    <h3>Financial Snapshot</h3>
-                    <div class="balance">Current Balance: <strong>฿21,432</strong></div>
-                    <div class="income">Today's Income: <span class="text-green">฿1,200</span></div>
-                    <div class="expense">Today's Expense: <span class="text-red">฿350</span></div>
-                    <select class="metric-dropdown">
-                        <option>Add Health Metric</option>
-                    </select>
-                </div>
+        <!-- กริดแสดงผล 3 คอลัมน์ย่อย -->
+        <div class="grid-container">
+          
+          <!-- สถานะสุขภาพ -->
+          <section class="summary-card">
+            <div class="section-title">
+              <h3>Health Status</h3>
             </div>
+            <div class="metric">🏃 Steps: <span class="text-accent">8,432</span></div>
+            <div class="metric">🌙 Sleep: <span>7.5 hrs</span></div>
+          </section>
 
-            <!-- Content Grid (Middle Row) -->
-            <div class="grid-container middle-row">
-                <!-- Card 4: Weekly Finance Trend -->
-                <div class="card chart-card">
-                    <h3>Weekly Finance Trend</h3>
-                    <div class="chart-placeholder">
-                        <div class="mock-line-income"></div>
-                        <div class="mock-line-expense"></div>
-                        <span style="color: #888; font-size: 14px;">[ Multidimensional Chart: Income (Green) vs Expenses (Red) ]</span>
-                    </div>
-                </div>
-
-                <!-- Card 5: Quick Financial Log -->
-                <div class="card log-card">
-                    <h3>Quick Financial Log</h3>
-                    <div class="form-group">
-                        <label for="amount">Log Transaction Amount (฿)</label>
-                        <input type="number" id="amount" placeholder="e.g., 500">
-                    </div>
-                    <div class="form-group">
-                        <label>Type: </label>
-                        <label><input type="radio" name="trans-type" value="income" checked> Income</label>
-                        <label><input type="radio" name="trans-type" value="expense"> Expense</label>
-                    </div>
-                    <button id="add-log-btn" class="btn-primary">Add Log</button>
-                </div>
+          <!-- งานประจำวัน -->
+          <section class="summary-card">
+            <div class="section-title">
+              <h3>Daily Tasks</h3>
             </div>
-        </main>
+            <label class="task-label"><input type="checkbox"> Review project board</label>
+            <label class="task-label"><input type="checkbox"> Call Sarah (Health)</label>
+            <label class="task-label"><input type="checkbox"> Submit sprint report</label>
+          </section>
+
+          <!-- สถานะการเงิน -->
+          <section class="summary-card">
+            <div class="section-title">
+              <h3>Financial Snapshot</h3>
+            </div>
+            <div class="metric">Balance: <strong class="text-accent">฿21,432</strong></div>
+            <div class="metric">Income: <span class="text-green">฿1,200</span></div>
+            <div class="metric">Expense: <span class="text-red">฿350</span></div>
+          </section>
+        </div>
+
+        <!-- กราฟแนวโน้ม -->
+        <section class="summary-card">
+          <div class="section-title">
+            <h3>Weekly Finance Trend</h3>
+          </div>
+          <div class="chart-placeholder">
+            <span class="muted-text">[ Multidimensional Chart: Income (Green) vs Expenses (Red) ]</span>
+          </div>
+        </section>
+      </main>
+
+      <!-- แถบจัดการข้อมูลด้านขวา (Right Sidebar) -->
+      <aside class="sidebar right-sidebar">
+        <div class="section-title">
+          <h3>Quick Financial Log</h3>
+        </div>
+
+        <label class="field">
+          <span>Transaction Amount (฿)</span>
+          <input type="number" id="amount" placeholder="e.g., 500" />
+        </label>
+
+        <div class="category-section">
+          <span>Type</span>
+          <div class="category-grid">
+            <button class="chip active" onclick="selectType(this, 'income')">📈 Income</button>
+            <button class="chip" onclick="selectType(this, 'expense')">📉 Expense</button>
+          </div>
+          <input type="hidden" id="trans-type" value="income">
+        </div>
+
+        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
+          <button id="add-log-btn" class="primary-btn">✓ Add Log</button>
+        </div>
+      </aside>
+      
     </div>
 
-    <!-- Client-side Interactivity Script -->
     <script>
-        document.getElementById('add-log-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            const amountInput = document.getElementById('amount').value;
-            const typeInput = document.querySelector('input[name="trans-type"]:checked').value;
+      // ฟังก์ชันเปลี่ยนสีปุ่ม Type (Income/Expense)
+      function selectType(btn, type) {
+        document.querySelectorAll('.category-grid .chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('trans-type').value = type;
+      }
 
-            if (!amountInput || isNaN(amountInput) || Number(amountInput) <= 0) {
-                alert('Please enter a valid amount!');
-                return;
-            }
+      // ฟังก์ชันบันทึกข้อมูล
+      document.getElementById('add-log-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const amountInput = document.getElementById('amount').value;
+        const typeInput = document.getElementById('trans-type').value;
 
-            alert(`Success! Logged ${typeInput} of ฿${amountInput} to your summary (This is a prototype)`);
-            document.getElementById('amount').value = '';
-        });
+        if (!amountInput || isNaN(amountInput) || Number(amountInput) <= 0) {
+          alert('Please enter a valid amount!');
+          return;
+        }
+
+        alert(`Success! Logged ${typeInput} of ฿${amountInput} to your summary`);
+        document.getElementById('amount').value = '';
+      });
     </script>
-</body>
+  </body>
 </html>
