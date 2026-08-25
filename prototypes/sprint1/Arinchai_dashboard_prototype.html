@@ -97,8 +97,8 @@
         <div class="category-section">
           <span>Type</span>
           <div class="category-grid">
-            <button class="chip active" onclick="selectType(this, 'income')">📈 Income</button>
-            <button class="chip" onclick="selectType(this, 'expense')">📉 Expense</button>
+            <button class="chip active">📈 Income</button>
+            <button class="chip">📉 Expense</button>
           </div>
           <input type="hidden" id="trans-type" value="income">
         </div>
@@ -110,28 +110,7 @@
       
     </div>
 
-    <script>
-      // ฟังก์ชันเปลี่ยนสีปุ่ม Type (Income/Expense)
-      function selectType(btn, type) {
-        document.querySelectorAll('.category-grid .chip').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('trans-type').value = type;
-      }
-
-      // ฟังก์ชันบันทึกข้อมูล
-      document.getElementById('add-log-btn').addEventListener('click', function(e) {
-        e.preventDefault();
-        const amountInput = document.getElementById('amount').value;
-        const typeInput = document.getElementById('trans-type').value;
-
-        if (!amountInput || isNaN(amountInput) || Number(amountInput) <= 0) {
-          alert('Please enter a valid amount!');
-          return;
-        }
-
-        alert(`Success! Logged ${typeInput} of ฿${amountInput} to your summary`);
-        document.getElementById('amount').value = '';
-      });
-    </script>
+    <!-- เชื่อมต่อไฟล์ JavaScript -->
+    <script src="Arinchai_dashboard.js"></script>
   </body>
 </html>
