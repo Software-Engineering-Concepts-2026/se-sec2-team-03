@@ -78,6 +78,7 @@ Architecture ที่ดีไม่จำเป็นต้องซับซ�
 
 สำหรับโปรเจกต์นี้ การเริ่มต้นด้วย Monolith ช่วยลดความซับซ้อนในการพัฒนาและ Deployment และยังสามารถแยก Service ในอนาคตได้เมื่อระบบมีความต้องการด้าน Scale เพิ่มขึ้น
 
+
 # Reflection — Post-Quiz 6
 
 ## 1. สิ่งที่ได้เรียนรู้
@@ -121,6 +122,7 @@ Architecture ที่ดีไม่จำเป็นต้องซับซ�
 Docker Container ช่วยให้การ Build, Test และ Deploy Application มีความสม่ำเสมอมากขึ้น
 
 สิ่งสำคัญคือ Docker ไม่ได้แก้ปัญหา Application Code ให้เอง ดังนั้นต้องตรวจสอบ Application, Dependencies, Port และ Configuration ให้ถูกต้องก่อนนำไป Containerize
+
 
 # Reflection — Post-Quiz 7
 
