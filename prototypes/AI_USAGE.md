@@ -108,3 +108,49 @@ Architecture Diagram ของระบบ
 การตัดสินใจเลือก Monolith เป็น Architecture หลักเป็นการตัดสินใจของทีม โดยพิจารณาจากจำนวนสมาชิกในทีม ระยะเวลาพัฒนา จำนวนผู้ใช้งาน และความไม่แน่นอนของ Requirements
 
 AI ถูกใช้เป็นเครื่องมือช่วยในการร่างเอกสารและตั้งคำถามเพื่อท้าทายการตัดสินใจของทีม ไม่ได้เป็นผู้ตัดสินใจแทนทีม
+
+# AI Usage Disclosure
+
+## AI Tool Used
+
+- Tool: ChatGPT
+- Purpose: ใช้ช่วยตรวจสอบและจัดทำ Dockerfile, Docker configuration, Docker README และช่วยแก้ปัญหาในการ Build และ Run Container
+- Human Responsibility: ทีมเป็นผู้ตรวจสอบผลลัพธ์และตัดสินใจเลือก Configuration ที่เหมาะสมกับโปรเจกต์
+
+---
+
+## Prompts Used
+
+### Prompt 1: สร้าง Dockerfile สำหรับ FastAPI
+
+> ช่วยเขียน Dockerfile สำหรับ Python FastAPI โดยใช้ python:3.12-slim, ติดตั้ง dependencies จาก requirements.txt, เปิด port 8000, ใช้ USER ที่ไม่ใช่ root และรันด้วย uvicorn
+
+### Prompt 2: ตรวจสอบ Docker Error
+
+> ช่วยแก้ปัญหา Docker Container ที่ขึ้น Error "Error loading ASGI app. Attribute app not found in module app" และอธิบายว่าต้องตรวจสอบ app.py และคำสั่ง uvicorn อย่างไร
+
+### Prompt 3: เขียน Docker README
+
+> ช่วยเขียน docker/README.md แบบสั้น ๆ โดยมี Image Name และ Tag, Base Image, Image Size, วิธี Build, วิธี Run, Environment Variables, เหตุผลที่เลือก Container และเหตุผลที่ไม่เลือก VM
+
+---
+
+## Direct AI Output
+
+ส่วนที่รับจาก AI โดยตรงและไม่ได้แก้ไข:
+
+1. โครงสร้าง Dockerfile สำหรับ FastAPI
+2. คำสั่ง Docker Build และ Docker Run
+3. โครงสร้างของ `docker/README.md`
+4. แนวทางการใช้ `USER nobody` เพื่อไม่ให้ Container ทำงานด้วย root
+5. แนวทางการใช้ `.dockerignore` เพื่อไม่ให้ไฟล์ที่ไม่จำเป็นถูกนำเข้า Docker Build Context
+
+---
+
+## Human Review
+
+ทีมตรวจสอบ Dockerfile, Docker Image และ Container ก่อนนำไปใช้งานจริง
+
+ทีมเป็นผู้ตรวจสอบและแก้ไข Configuration ให้ตรงกับโครงสร้างของโปรเจกต์ โดยใช้ Python FastAPI และ Port 8000
+
+AI ถูกใช้เป็นเครื่องมือช่วยในการเขียน Configuration และแก้ไขปัญหาเท่านั้น ไม่ได้เป็นผู้ตัดสินใจแทนทีม
