@@ -7,7 +7,7 @@ app = FastAPI(
 
 
 @app.get("/")
-def root():
+def get_service_status():
     return {
         "service": "stats-service",
         "status": "ok"
