@@ -154,3 +154,76 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 ทีมเป็นผู้ตรวจสอบและแก้ไข Configuration ให้ตรงกับโครงสร้างของโปรเจกต์ โดยใช้ Python FastAPI และ Port 8000
 
 AI ถูกใช้เป็นเครื่องมือช่วยในการเขียน Configuration และแก้ไขปัญหาเท่านั้น ไม่ได้เป็นผู้ตัดสินใจแทนทีม
+
+
+# AI Usage Disclosure
+
+## Lab 7 — Refactoring
+
+### AI Tool
+
+- Tool: ChatGPT
+- Purpose: ใช้ช่วยวิเคราะห์ Code Smell, อธิบายปัญหา, เสนอแนวทาง Refactoring และช่วยออกแบบ Test
+- Final decision: ทีมเป็นผู้ตรวจสอบและตัดสินใจเลือกแนวทาง Refactoring
+
+---
+
+## Prompts Used
+
+### Prompt 1 — Identify Code Smell
+
+> อ่าน codebase ของโปรเจกต์นี้และระบุ Code Smell ที่พบ พร้อมระบุ file, function และเหตุผล โดยเน้น Local Refactoring ที่สามารถแก้ได้ภายใน 30 นาที
+
+### Prompt 2 — Explain
+
+> อธิบายว่าฟังก์ชันชื่อ root ใน FastAPI นี้มีปัญหาเรื่อง Poor Naming หรือไม่ และถ้า refactor ควรเปลี่ยนชื่อเป็นอะไร โดยต้องไม่เปลี่ยน behavior ของ API
+
+### Prompt 3 — Propose
+
+> เสนอวิธี refactor ชื่อ function root ให้สื่อความหมายมากขึ้น พร้อมบอกว่าต้องแก้ Test อย่างไรเพื่อยืนยันว่า behavior เดิมยังเหมือนเดิม
+
+---
+
+## AI Output Used Directly
+
+ส่วนที่รับจาก AI โดยตรง:
+
+- แนวคิดในการระบุ `root()` ว่าเป็นปัญหาเรื่อง Poor Naming
+- คำแนะนำให้เปลี่ยนชื่อ Function ให้สื่อความหมายมากขึ้น
+- แนวทางใช้ชื่อ `get_service_status`
+- แนวทางการเขียน Test เพื่อยืนยันว่า Behavior เดิมไม่เปลี่ยน
+
+---
+
+## Team-Written Code
+
+ทีมเป็นผู้เขียนและแก้ไข Code หลักเอง ได้แก่:
+
+- เปลี่ยนชื่อ Function จาก `root()` เป็น `get_service_status()`
+- เขียน Test สำหรับ `GET /`
+- เขียน Test สำหรับ `GET /health`
+- ตรวจสอบว่า API response และ status code ยังคงเหมือนเดิม
+- รัน Docker Container และทำ Manual Smoke Test
+
+---
+
+## AI Workflow
+
+ทีมใช้ Workflow ตามขั้นตอน:
+
+**Explain → Propose → Apply → Test**
+
+1. **Explain:** ให้ AI อธิบาย Code Smell
+2. **Propose:** ให้ AI เสนอแนวทาง Refactoring
+3. **Apply:** ทีมตรวจสอบและแก้ไข Code เอง
+4. **Test:** ทีมรัน Test และ Manual Smoke Test
+
+---
+
+## Human Review
+
+ทีมตรวจสอบ Code ที่ AI แนะนำก่อนนำไปใช้จริง
+
+การ Refactoring ไม่เปลี่ยน API URL, Response หรือ Architecture ของระบบ
+
+AI ถูกใช้เป็นเครื่องมือช่วยในการวิเคราะห์และเสนอแนวทางเท่านั้น การตัดสินใจและการแก้ไข Code เป็นความรับผิดชอบของทีม
