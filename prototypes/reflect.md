@@ -77,3 +77,48 @@ AI สามารถช่วยลดเวลาในการทำงา�
 Architecture ที่ดีไม่จำเป็นต้องซับซ้อนที่สุด แต่ควรเหมาะสมกับบริบทของระบบและทีมพัฒนา
 
 สำหรับโปรเจกต์นี้ การเริ่มต้นด้วย Monolith ช่วยลดความซับซ้อนในการพัฒนาและ Deployment และยังสามารถแยก Service ในอนาคตได้เมื่อระบบมีความต้องการด้าน Scale เพิ่มขึ้น
+
+
+# Reflection — Post-Quiz 6
+
+## 1. สิ่งที่ได้เรียนรู้
+
+จาก Lab 6 ได้เรียนรู้การนำ Application มาใช้งานผ่าน Docker Container ตั้งแต่การสร้าง Dockerfile, Build Image, Run Container และ Push Image ขึ้น Docker Hub
+
+ได้เรียนรู้ว่า Container ช่วยให้ Application และ Dependencies สามารถทำงานใน Environment ที่เหมือนกันมากขึ้น และช่วยให้การ Deploy ทำได้ง่ายขึ้น
+
+## 2. สิ่งที่ทำได้ดี
+
+สามารถสร้าง Dockerfile สำหรับ Python FastAPI โดยใช้ `python:3.12-slim` และกำหนด Port สำหรับ Application ได้
+
+สามารถ Build Docker Image และ Run Container ได้สำเร็จ รวมถึงทดสอบ API ผ่าน Browser และ FastAPI `/docs`
+
+นอกจากนี้ยังสามารถ Push Image `thanapat2103/stats-service-api:v0.1.0` ขึ้น Docker Hub ได้
+
+## 3. ปัญหาที่พบ
+
+พบปัญหาในการตั้งค่า Docker และการ Run Container เนื่องจากช่วงแรกยังไม่มี Docker Engine ที่พร้อมใช้งาน
+
+นอกจากนี้พบ Error จาก FastAPI เนื่องจาก `app.py` ยังไม่มีตัวแปร `app` สำหรับให้ Uvicorn เรียกใช้งาน
+
+หลังจากตรวจสอบและแก้ไขแล้ว Container สามารถ Start และทำงานได้ตามปกติ
+
+## 4. สิ่งที่จะปรับปรุง
+
+ในครั้งต่อไปจะตรวจสอบโครงสร้างโปรเจกต์และ Dependencies ก่อนสร้าง Dockerfile
+
+จะตรวจสอบ Port, Environment Variables และ Entry Point ของ Application ให้ตรงกับ Configuration ก่อน Build Image
+
+นอกจากนี้จะให้ความสำคัญกับการลดขนาด Image และ Security มากขึ้น เช่น การใช้ Slim/Alpine Image, `.dockerignore` และการไม่รัน Container ด้วย root
+
+## 5. สิ่งที่นำไปใช้ต่อ
+
+จะนำ Docker Container ไปใช้เป็นพื้นฐานสำหรับการพัฒนาและ Deployment ใน Lab ต่อไป
+
+สามารถนำ Docker Image เดียวกันไปใช้ใน Environment อื่นได้โดยไม่ต้องติดตั้ง Python และ Dependencies ใหม่ทั้งหมด
+
+## 6. Key Takeaway
+
+Docker Container ช่วยให้การ Build, Test และ Deploy Application มีความสม่ำเสมอมากขึ้น
+
+สิ่งสำคัญคือ Docker ไม่ได้แก้ปัญหา Application Code ให้เอง ดังนั้นต้องตรวจสอบ Application, Dependencies, Port และ Configuration ให้ถูกต้องก่อนนำไป Containerize
