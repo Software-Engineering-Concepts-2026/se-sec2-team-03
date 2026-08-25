@@ -158,44 +158,7 @@
       </aside>
     </div>
 
-    <script>
-const amountInput=document.getElementById('amountInput');
-const dateInput=document.querySelector('input[type="date"]');
-const noteInput=document.querySelector('textarea');
-const saveBtn=document.querySelector('.primary-btn');
-const cancelBtn=document.querySelector('.ghost-btn');
-const total=document.getElementById('totalExpense');
-const tbody=document.getElementById('historyBody');
-dateInput.valueAsDate=new Date();
-let totalValue=12500;
-const catTotals={อาหาร:72,เดินทาง:54,ช้อปปิ้ง:63,บ้าน:44,บันเทิง:58,"อื่นๆ":38};
-
-document.querySelectorAll('.chip').forEach(c=>c.onclick=e=>{e.preventDefault();document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');});
-
-document.querySelectorAll('.keypad-btn').forEach(b=>b.onclick=()=>{const a=b.dataset.action,v=b.dataset.value;if(a==='backspace'){amountInput.value=amountInput.value.slice(0,-1)||'0.00';return;}if(!v)return;let cur=amountInput.value==='0.00'?'':amountInput.value.replace(/[^0-9.]/g,'');amountInput.value=cur+v;});
-
-saveBtn.onclick=e=>{
-e.preventDefault();
-if(amountInput.value==='0.00'||noteInput.value.trim()===''||dateInput.value===''){alert('กรุณากรอกข้อมูลให้ครบ');return;}
-const amt=parseFloat(amountInput.value); if(isNaN(amt)||amt<=0){alert('จำนวนเงินไม่ถูกต้อง');return;}
-const cat=document.querySelector('.chip.active').textContent.replace(/^[^ ]+ /,'');
-const tr=document.createElement('tr');
-tr.innerHTML=`<td>วันนี้</td><td>${noteInput.value}</td><td>${cat}</td><td class="amount negative">-฿ ${amt.toFixed(2)}</td>`;
-tbody.prepend(tr);
-totalValue+=amt;
-total.textContent='฿ '+totalValue.toLocaleString('en-US',{minimumFractionDigits:2});
-const cls={อาหาร:'food',เดินทาง:'travel',ช้อปปิ้ง:'shopping',บ้าน:'home',บันเทิง:'fun','อื่นๆ':'other'}[cat];
-const bar=document.querySelector('.bar.'+cls);
-if(bar){let h=parseInt(bar.style.height)||catTotals[cat];h=Math.min(h+5,100);bar.style.height=h+'%';}
-localStorage.setItem('expenseTable',tbody.innerHTML);
-localStorage.setItem('expenseTotal',totalValue);
-alert('บันทึกสำเร็จ');
-amountInput.value='0.00';noteInput.value='';
-};
-cancelBtn.onclick=()=>{amountInput.value='0.00';noteInput.value='';dateInput.valueAsDate=new Date();}
-const st=localStorage.getItem('expenseTable');if(st)tbody.innerHTML=st;
-const sv=localStorage.getItem('expenseTotal');if(sv){totalValue=parseFloat(sv);total.textContent='฿ '+totalValue.toLocaleString('en-US',{minimumFractionDigits:2});}
-</script>
+    <script src="Thanapat_RecordExpenses.js"></script>
   </body>
 </html>
   
