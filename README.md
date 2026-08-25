@@ -142,17 +142,7 @@ User personas and key scenarios that drive our development are located in the `/
 
 ## โครงสร้าง Branch
 
-### Branch หลัก
 
-- `main`
-  - เก็บโค้ดที่พร้อมใช้งานและมีความเสถียร
-
-- `develop`
-  - ใช้รวมงานก่อนนำขึ้น `main`
-
-### Branch สำหรับการพัฒนา
-
-สร้างจาก `develop`
 
 ```text
 feature/<feature-name>
@@ -202,13 +192,12 @@ docs: อัปเดตเอกสาร API
 
 ## กระบวนการ Pull Request (PR)
 
-1. สร้าง Branch ใหม่จาก `develop`
+1. สร้าง Branch ใหม่จาก `main`
 2. พัฒนาและ Commit งาน
 3. Push ขึ้น Repository
-4. สร้าง Pull Request ไปยัง `develop`
-5. แนบลิงก์ Task หรือ User Story ที่เกี่ยวข้อง
-6. ตรวจสอบว่า Build และ Test ผ่าน
-7. ขอ Review จากสมาชิกทีม
+4. สร้าง Pull Request ไปยัง `main`
+5. ขอ Code Review จากสมาชิกในทีมอย่างน้อย 1 คน
+6. เมื่อผ่านการ Review ให้กด Squash and Merge เข้า `main` 
 
 ---
 
