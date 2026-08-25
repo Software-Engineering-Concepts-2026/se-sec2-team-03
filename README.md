@@ -139,19 +139,9 @@ User personas and key scenarios that drive our development are located in the `/
 
 ## โครงสร้าง Branch
 
-### Branch หลัก
-
 * `main`
-
   * เก็บโค้ดที่พร้อมใช้งานและมีความเสถียร
-
-* `develop`
-
-  * ใช้รวมงานก่อนนำขึ้น `main`
-
-### Branch สำหรับการพัฒนา
-
-สร้างแยกออกมาจาก `main` โดยตรง
+  * สร้างแยกออกมาจาก `main` โดยตรง
 
 ```text
 feature/<feature-name>
@@ -205,8 +195,8 @@ docs: อัปเดตเอกสาร API
 2. พัฒนาและ Commit งาน
 3. Push ขึ้น Repository
 4. สร้าง Pull Request ไปยัง `main`
-5.ขอ Code Review จากสมาชิกในทีมอย่างน้อย 1 คน
-6.เมื่อผ่านการ Review ให้กด Squash and Merge เข้า `main` 
+5. ขอ Code Review จากสมาชิกในทีมอย่างน้อย 1 คน
+6. เมื่อผ่านการ Review ให้กด Squash and Merge เข้า `main` 
 
 ---
 
