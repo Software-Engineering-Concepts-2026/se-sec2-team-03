@@ -8,7 +8,8 @@ This directory contains key architectural diagrams and decision records for the 
 
 ## C4 Model: Container (Level 2)
 
-![Container Diagram](./diagrams/c4-level-2-container.png)
+![Container Diagram](./diagrams/mermaid-diagram-C1.png)
+![Container Diagram](./diagrams/mermaid-diagram-C2.png)
 
 ## Architectural Decision Records (ADRs)
 
