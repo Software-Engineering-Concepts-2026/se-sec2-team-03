@@ -31,13 +31,15 @@ This section explains how to get a local copy of the project up and running for 
     ```
 
 2.  **Run the services:**
-    _(This section will be updated in later weeks when using Docker Compose)_
     ```bash
-    # Example for a single service
-    cd services/stats-service
-    docker build -t your-team/stats-service .
-    docker run -p 5001:5000 your-team/stats-service
+    # Build Docker Image from Root
+    docker build -t thanapat2103/stats-service-api:v0.1.0 .
+
+    # Run API Server & Web App Prototype
+    docker run --rm -p 8000:8000 thanapat2103/stats-service-api:v0.1.0
     ```
+    - API Documentation: http://localhost:8000/docs
+    - Expenses Prototype: http://localhost:8000/expenses (หรือ http://localhost:8000/prototypes/sprint1/Thanapat_RecordExpenses_prototype.html)
 
 ---
 
