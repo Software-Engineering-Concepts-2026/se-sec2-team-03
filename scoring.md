@@ -51,3 +51,14 @@ Board: https://github.com/orgs/Software-Engineering-Concepts-2026/projects/9 —
 > Gun ไม่มีไฟล์ Lab1 และไม่มี commit ที่ merge เลยทุกแล็บ → 0 ทั้งหมด / Salintip มีแค่ Lab1 → Lab2-7+M1 0
 > Gradebook อัปเดตแล้ว: `67025976 0,0,0,0,0,0,0,0` / `67021309 50,0,0,0,0,0,0,0`
 
+## ยืนยัน commit authors (ตัด thammarat-ai ออก — ก่อน 7 ก.ย.)
+
+| ID | ชื่อ | Commits merge จริง | Lab ที่ทำ |
+|---|---|---|---|
+| 67021006 | ธนภัทร เอี่ยมสอาด | 12 commits — `feature/lab3` `lab5-architecture` `lab6-dockerfile` `lab7-refactor` `Thanapat.md` | Lab1,3,4,5,6,7 |
+| 67024896 | อริญชัย ปิ่นทอง | 5 commits — `project-proposal` Lab2, `Arinchai_dashboard.js` Lab4, `lab6` | Lab2,4,6,7 |
+| 67021309 | สลิลทิพย์ ดอกนางแย้ม | 2 commits — `Salintip.md` Lab1 (PR #35,36) | Lab1 อย่างเดียว |
+| 67025976 | คชภัค เสนาน้อย | 0 merged — PR #26,27 `open` ไม่ merge | ไม่มีเลย |
+
+> ตรวจสอบด้วย `gh api repos/.../commits --paginate --jq '.[].author.login'` ตัด `thammarat-ai` ออก — สรุป Lab1 รายคน Gun 0 / Salintip 50,0×7 ถูกต้องตาม Gradebook
+
