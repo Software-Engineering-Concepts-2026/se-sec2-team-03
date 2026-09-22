@@ -1,33 +1,37 @@
 import sys
 from pathlib import Path
+import pytest
 
-SRC_DIR = Path(__file__).resolve().parent.parent
+# กำหนด Path สำหรับดึงไฟล์จาก src
+SRC_DIR = Path(__file__).resolve().parent.parent / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from fizzbuzz import fizzbuzz, is_multiple
 
 
-def test_fizzbuzz_three():
-    assert fizzbuzz(3) == "Fizz"
+# 1. รวบเคสทดสอบ fizzbuzz ด้วย Parametrize
+@pytest.mark.parametrize(
+    "number, expected",
+    [
+        (1, "1"),
+        (3, "Fizz"),
+        (5, "Buzz"),
+        (15, "FizzBuzz"),
+        (7, "7"),
+    ],
+)
+def test_fizzbuzz(number, expected):
+    assert fizzbuzz(number) == expected
 
 
-def test_fizzbuzz_one():
-    assert fizzbuzz(1) == "1"
-
-
-def test_fizzbuzz_five():
-    assert fizzbuzz(5) == "Buzz"
-
-
-def test_fizzbuzz_fifteen():
-    assert fizzbuzz(15) == "FizzBuzz"
-
-
-def test_fizzbuzz_seven():
-    assert fizzbuzz(7) == "7"
-
-
-def test_is_multiple_helper():
-    assert is_multiple(10, 5) is True
-    assert is_multiple(10, 3) is False
+# 2. เคสทดสอบ Helper Function
+@pytest.mark.parametrize(
+    "number, multiple, expected",
+    [
+        (10, 5, True),
+        (10, 3, False),
+    ],
+)
+def test_is_multiple(number, multiple, expected):
+    assert is_multiple(number, multiple) is expected
