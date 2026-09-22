@@ -201,7 +201,7 @@ AI ควรเป็นเครื่องมือช่วยในกา�
 ## B1. Unit Test Plan (Equivalence Partitioning + Boundary Value Analysis)
 
 ### 1. ฟังก์ชันที่เลือกทดสอบ
-เลือกฟังก์ชัน `calculate_discount(amount: float, percentage: float) -> float` ใน `src/discount.py` ซึ่งเป็น Core Business Logic สำหรับคำนวณส่วนลดและสรุปยอดค่าใช้จ่าย
+เลือกฟังก์ชัน `calculate_discount(amount: float, percentage: float) -> float` ใน `services/stats-service/app.py` ซึ่งเป็น Core Business Logic สำหรับคำนวณส่วนลดและสรุปยอดค่าใช้จ่ายของระบบ
 
 ### 2. การวิเคราะห์ Equivalence Partitions (EP) และ Boundary Values (BV)
 ระบุทั้งหมด 7 Partitions ครอบคลุมทั้ง Valid Input และ Error Handling:

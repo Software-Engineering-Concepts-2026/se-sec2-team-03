@@ -2,11 +2,12 @@ import sys
 from pathlib import Path
 from hypothesis import given, strategies as st
 
-SRC_DIR = Path(__file__).resolve().parent.parent / "src"
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
+# Import from existing codebase (services/stats-service/app.py)
+SERVICES_DIR = Path(__file__).resolve().parent.parent.parent / "services" / "stats-service"
+if str(SERVICES_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVICES_DIR))
 
-from discount import apply_discount
+from app import apply_discount
 
 
 # ==============================================================================

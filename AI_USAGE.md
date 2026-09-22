@@ -246,7 +246,7 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 
 > จากฟังก์ชัน `calculate_discount(amount, percentage)` ช่วยระบุ Equivalence Partitions และ Boundary Values ทั้งฝั่ง Valid Input และ Invalid Input โดยเขียนเป็น Unit Test ตามโครงสร้าง Arrange-Act-Assert (AAA) ใน pytest ให้ครอบคลุมขอบเขต 0%, 100%, ทศนิยม และการจัดการข้อผิดพลาดเมื่อติดลบหรือเกิน 100%
 
-**นำไปใช้กับ:** `tests/test_unit.py`
+**นำไปใช้กับ:** `src/tests/test_unit.py` และ `services/stats-service/test_app.py`
 
 ---
 
@@ -254,7 +254,8 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 
 > สำหรับฟังก์ชันคำนวณส่วนลด `apply_discount(amount, percentage)` ช่วยวิเคราะห์ Invariants หรือคุณสมบัติทางคณิตศาสตร์ที่ต้องเป็นจริงเสมอ ไม่ว่า Input จะสุ่มมาแบบใด (เช่น Bounded range, Identity at 0%, Monotonicity) เพื่อนำไปเขียน Property-Based Test ด้วย Hypothesis พร้อมทั้งระบุ Strategies ที่เหมาะสม
 
-**นำไปใช้กับ:** `tests/test_property.py`
+**นำไปใช้กับ:** `src/tests/test_property.py`
+
 
 ---
 
@@ -282,9 +283,10 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 ทีมเป็นผู้ลงมือปฏิบัติและตรวจสอบด้วยตนเอง:
 
 1. ดำเนินการ TDD Kata (FizzBuzz) ทีละรอบ Red $\rightarrow$ Green $\rightarrow$ Refactor พร้อมบันทึก Commit History แยกกันตามรอบจริง
-2. สร้างโมดูล `src/discount.py` และนำ AAA Pattern ไปปรับใช้ใน `tests/test_unit.py`
+2. พัฒนาฟังก์ชันคำนวณใน `services/stats-service/app.py` และนำ AAA Pattern ไปปรับใช้ใน `src/tests/test_unit.py` รวมถึง `services/stats-service/test_app.py`
 3. ทำการทดลอง Saboteur Break Code จริง ตรวจสอบว่า Test ตรวจพบความผิดพลาด แล้วจึง Revert กลับ
 4. ทดสอบและตั้งค่า GitHub Actions CI Workflow สำหรับ Automated Testing & Code Coverage
+
 
 ---
 

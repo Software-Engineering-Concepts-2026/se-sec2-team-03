@@ -2,12 +2,12 @@ import pytest
 import sys
 from pathlib import Path
 
-# Add src to sys.path for direct module import
-SRC_DIR = Path(__file__).resolve().parent.parent / "src"
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
+# Import from existing codebase (services/stats-service/app.py)
+SERVICES_DIR = Path(__file__).resolve().parent.parent.parent / "services" / "stats-service"
+if str(SERVICES_DIR) not in sys.path:
+    sys.path.insert(0, str(SERVICES_DIR))
 
-from discount import calculate_discount
+from app import calculate_discount
 
 
 # ==============================================================================
