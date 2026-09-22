@@ -1,21 +1,18 @@
-"""Unit tests for calculate_discount (Equivalence Partitioning & AAA pattern)."""
 import pytest
 import sys
 from pathlib import Path
 
-SRC_DIR = Path(__file__).resolve().parent.parent
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
-
+# Import from existing codebase (services/stats-service/app.py)
 SERVICES_DIR = Path(__file__).resolve().parent.parent.parent / "services" / "stats-service"
 if str(SERVICES_DIR) not in sys.path:
     sys.path.insert(0, str(SERVICES_DIR))
 
-try:
-    from discount import calculate_discount
-except ImportError:
-    from app import calculate_discount
+from app import calculate_discount
 
+
+# ==============================================================================
+# Unit Tests: Equivalence Partitioning & Boundary Value Analysis (AAA Pattern)
+# ==============================================================================
 
 def test_calculate_discount_boundary_zero():
     """EP1 (Boundary - Lower Bound): 0% discount should return full original amount."""
@@ -56,7 +53,7 @@ def test_calculate_discount_boundary_hundred():
 def test_calculate_discount_fractional_rounding():
     """EP4 (Valid Partition - Precision): Fractional percentage with 2-decimal precision."""
     # Arrange
-    amount, percentage = 99.90, 15.0
+    amount, percentage = 99.90, 15.0  # 99.90 - 14.985 = 84.915 -> 84.92
     
     # Act
     result = calculate_discount(amount, percentage)

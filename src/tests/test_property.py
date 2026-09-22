@@ -2,19 +2,17 @@ import sys
 from pathlib import Path
 from hypothesis import given, strategies as st
 
-SRC_DIR = Path(__file__).resolve().parent.parent
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
-
+# Import from existing codebase (services/stats-service/app.py)
 SERVICES_DIR = Path(__file__).resolve().parent.parent.parent / "services" / "stats-service"
 if str(SERVICES_DIR) not in sys.path:
     sys.path.insert(0, str(SERVICES_DIR))
 
-try:
-    from discount import apply_discount
-except ImportError:
-    from app import apply_discount
+from app import apply_discount
 
+
+# ==============================================================================
+# Property-Based Testing with Hypothesis
+# ==============================================================================
 
 @given(
     amount=st.floats(min_value=0.0, max_value=100000.0, allow_nan=False, allow_infinity=False),

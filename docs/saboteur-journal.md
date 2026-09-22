@@ -33,11 +33,11 @@ if percentage <= 0 or percentage > 100:
 การเปลี่ยน `< 0` เป็น `<= 0` จะทำให้กรณีที่ส่วนลดเท่ากับ `0%` (ซึ่งเป็นค่า Boundary ที่ถูกต้อง) ถูกมองว่าเป็นข้อผิดพลาดและโยน `ValueError` ออกมา
 
 #### ผลการทดสอบ (Test Execution Result)
-เมื่อรันชุดการทดสอบ `pytest tests/`:
+เมื่อรันชุดการทดสอบ `pytest src/tests/`:
 - **ผลลัพธ์:** ❌ **FAILED**
 - **Test Case ที่ดักจับได้:**
-  1. `tests/test_unit.py::test_calculate_discount_boundary_zero` — ตรวจพบ `ValueError: Percentage must be between 0 and 100` แทนที่จะได้ผลลัพธ์ `100.0`
-  2. `tests/test_property.py::test_apply_discount_identity_at_zero` — Hypothesis ดักจับ Minimal failing example ได้ทันทีที่ `amount=0.0`
+  1. `src/tests/test_unit.py::test_calculate_discount_boundary_zero` (หรือ `services/stats-service/test_app.py`) — ตรวจพบ `ValueError: Percentage must be between 0 and 100` แทนที่จะได้ผลลัพธ์ `100.0`
+  2. `src/tests/test_property.py::test_apply_discount_identity_at_zero` — Hypothesis ดักจับ Minimal failing example ได้ทันทีที่ `amount=0.0`
 - **สรุปผลการจับ Saboteur:** **2/2 Tests Detected (100% Detection Rate)**
 
 #### การกู้คืนโค้ด (Revert)
