@@ -1,2 +1,2 @@
 def fizzbuzz(n: int) -> str:
-    pass
+    return "Fizz"
