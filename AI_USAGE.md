@@ -227,3 +227,70 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 การ Refactoring ไม่เปลี่ยน API URL, Response หรือ Architecture ของระบบ
 
 AI ถูกใช้เป็นเครื่องมือช่วยในการวิเคราะห์และเสนอแนวทางเท่านั้น การตัดสินใจและการแก้ไข Code เป็นความรับผิดชอบของทีม
+
+---
+
+# AI Usage Disclosure — Lab 09: Testing & CI
+
+## AI Tool Used
+
+- **Tool:** Gemini / Antigravity AI
+- **Purpose:** ใช้ช่วยระบุ Equivalence Partitions, ออกแบบ Boundary Test Cases, แนะนำ Invariants สำหรับ Property-Based Testing (Hypothesis), และตรวจสอบคุณภาพของ Test Suite
+- **Human Responsibility:** ทีมเป็นผู้ตรวจสอบความสมบูรณ์ของ Test Logic, นำหลักการ AAA มาปฏิบัติจริง, ดำเนินการ TDD แบบแยก Commit, และทดสอบ Saboteur เพื่อยืนยันพฤติกรรมของระบบ
+
+---
+
+## Prompts Used (>= 3 Prompts)
+
+### Prompt 1: Generate Test Cases (Equivalence Partitioning & Boundary Values)
+
+> จากฟังก์ชัน `calculate_discount(amount, percentage)` ช่วยระบุ Equivalence Partitions และ Boundary Values ทั้งฝั่ง Valid Input และ Invalid Input โดยเขียนเป็น Unit Test ตามโครงสร้าง Arrange-Act-Assert (AAA) ใน pytest ให้ครอบคลุมขอบเขต 0%, 100%, ทศนิยม และการจัดการข้อผิดพลาดเมื่อติดลบหรือเกิน 100%
+
+**นำไปใช้กับ:** `tests/test_unit.py`
+
+---
+
+### Prompt 2: Identify Gaps & Property Invariants (Property-Based Testing)
+
+> สำหรับฟังก์ชันคำนวณส่วนลด `apply_discount(amount, percentage)` ช่วยวิเคราะห์ Invariants หรือคุณสมบัติทางคณิตศาสตร์ที่ต้องเป็นจริงเสมอ ไม่ว่า Input จะสุ่มมาแบบใด (เช่น Bounded range, Identity at 0%, Monotonicity) เพื่อนำไปเขียน Property-Based Test ด้วย Hypothesis พร้อมทั้งระบุ Strategies ที่เหมาะสม
+
+**นำไปใช้กับ:** `tests/test_property.py`
+
+---
+
+### Prompt 3: Review Quality & Saboteur Test Design
+
+> ช่วยตรวจสอบคุณภาพของชุด Unit Test และ Property Test ที่สร้างขึ้นว่ามีจุดบกพร่องเรื่อง "Test State Coverage, Not Code Coverage" ตาม Pragmatic Programmer Tip 93 หรือไม่ และเสนอแนวทางการทำ Saboteur Testing เพื่อจงใจ Break โค้ดใน Production ให้เห็นว่า Test ดักจับได้จริง ไม่ใช่แค่รันผ่านโค้ด
+
+**นำไปใช้กับ:** `docs/saboteur-journal.md` และการปรับปรุง Test Suite
+
+---
+
+## Direct AI Output
+
+ส่วนต่อไปนี้เป็นเนื้อหาที่รับคำแนะนำหรือโครงสร้างจาก AI:
+
+1. แนวคิดและรายการแบ่ง Equivalence Partitions 7 กรณีสำหรับฟังก์ชันคำนวณส่วนลด
+2. โครงสร้าง Invariants 4 ข้อสำหรับการทดสอบด้วย Hypothesis (`st.floats`, `@given`)
+3. โครงร่างเทมเพลตสำหรับ GitHub Actions workflow (`.github/workflows/test.yml`)
+4. ข้อเสนอแนะการทดลอง Saboteur Defect Injection ที่จุดตรวจสอบขอบเขต (`<= 0` แทน `< 0`)
+
+---
+
+## Team-Written Code & Implementation
+
+ทีมเป็นผู้ลงมือปฏิบัติและตรวจสอบด้วยตนเอง:
+
+1. ดำเนินการ TDD Kata (FizzBuzz) ทีละรอบ Red $\rightarrow$ Green $\rightarrow$ Refactor พร้อมบันทึก Commit History แยกกันตามรอบจริง
+2. สร้างโมดูล `src/discount.py` และนำ AAA Pattern ไปปรับใช้ใน `tests/test_unit.py`
+3. ทำการทดลอง Saboteur Break Code จริง ตรวจสอบว่า Test ตรวจพบความผิดพลาด แล้วจึง Revert กลับ
+4. ทดสอบและตั้งค่า GitHub Actions CI Workflow สำหรับ Automated Testing & Code Coverage
+
+---
+
+## Human Review & Quality Assurance
+
+ทีมได้ทบทวนโค้ดและ Assertion ทุกตัวเพื่อให้มั่นใจว่า:
+- ไม่มี Test ตัวใดที่เป็น Dummy Assertion (เช่น `assert True`) แต่ทดสอบ State และ Business Logic จริง
+- ทุกกรณีทดสอบมี Error message ที่ชัดเจนเมื่อเกิดข้อผิดพลาด
+- Workflow ของ CI สั่ง Fail และ Block การทำงานได้อย่างถูกต้องเมื่อมี Test ล้มเหลว
