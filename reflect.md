@@ -193,3 +193,63 @@ AI ควรเป็นเครื่องมือช่วยในกา�
 การปรับปรุงเล็ก ๆ เช่นการตั้งชื่อ Function ให้สื่อความหมาย สามารถช่วยให้ Code อ่านง่าย ดูแลรักษาง่าย และลดความสับสนของผู้พัฒนาในอนาคตได้
 
 สิ่งสำคัญที่สุดคือ หลังจาก Refactor แล้ว **behavior เดิมของระบบต้องยังคงเหมือนเดิม**
+
+---
+
+# Reflection — Post-Quiz 9
+
+## B1. Unit Test Plan (Equivalence Partitioning + Boundary Value Analysis)
+
+### 1. ฟังก์ชันที่เลือกทดสอบ
+เลือกฟังก์ชัน `calculate_discount(amount: float, percentage: float) -> float` ใน `src/discount.py` ซึ่งเป็น Core Business Logic สำหรับคำนวณส่วนลดและสรุปยอดค่าใช้จ่าย
+
+### 2. การวิเคราะห์ Equivalence Partitions (EP) และ Boundary Values (BV)
+ระบุทั้งหมด 7 Partitions ครอบคลุมทั้ง Valid Input และ Error Handling:
+
+1. **EP1 (Boundary - Lower Bound):** Percentage = 0% $\rightarrow$ คืนค่ายอดเดิมเต็มจำนวน (`amount`)
+2. **EP2 (Valid Normal Partition):** Percentage อยู่ในช่วงปกติ (เช่น 15%, 20%) $\rightarrow$ คำนวณหักส่วนลดได้ถูกต้อง
+3. **EP3 (Boundary - Upper Bound):** Percentage = 100% $\rightarrow$ คืนค่ายอดสุทธิเป็น `0.0`
+4. **EP4 (Valid Precision Partition):** ทศนิยมและเศษสตางค์ $\rightarrow$ ตรวจสอบการปัดเศษทศนิยม 2 ตำแหน่ง
+5. **EP5 (Invalid Partition - Below Min):** Percentage < 0% (เช่น -5%) $\rightarrow$ ตรวจจับและ Raise `ValueError`
+6. **EP6 (Invalid Partition - Above Max):** Percentage > 100% (เช่น 100.1%) $\rightarrow$ ตรวจจับและ Raise `ValueError`
+7. **EP7 (Invalid Partition - Negative Amount):** Amount < 0 $\rightarrow$ ตรวจจับและ Raise `ValueError`
+
+### 3. โครงสร้างการเขียนแบบ Arrange-Act-Assert (AAA)
+แยกขั้นตอนการเตรียมข้อมูล (Arrange), การเรียกฟังก์ชัน (Act), และการตรวจสอบผลลัพธ์ (Assert) ออกจากกันอย่างชัดเจน ทำให้ Test อ่านง่ายและระบุสาเหตุข้อผิดพลาดได้รวดเร็ว
+
+---
+
+## B2. TDD Plan (Red-Green-Refactor with FizzBuzz Kata)
+
+### 1. วงจร Red-Green-Refactor ที่นำมาใช้
+- **Red:** เขียน Test สำหรับพฤติกรรมใหม่ก่อนเสมอ แล้วรันให้ล้มเหลว (เช่น `assert fizzbuzz(3) == "Fizz"`) ยืนยันว่า Test สามารถดักจับพฤติกรรมที่ยังไม่มีได้จริง
+- **Green:** เขียนโค้ดใน Production Code ให้เรียบง่ายและน้อยที่สุดเพื่อให้ Test ผ่าน
+- **Refactor:** ปรับปรุงโครงสร้างของโค้ด เช่น การสกัดฟังก์ชัน `is_multiple(n, divisor)` เพื่อลดโค้ดซ้ำซ้อนและเพิ่มความสะอาด โดยที่ Test ทั้งหมดยังคง Pass อยู่เสมอ
+
+### 2. ลำดับการเพิ่มพฤติกรรมแบบ Incremental
+เริ่มจาก `3 ("Fizz")` $\rightarrow$ `1 ("1")` $\rightarrow$ `5 ("Buzz")` $\rightarrow$ `15 ("FizzBuzz")` $\rightarrow$ `7 ("7")`
+การทำ TDD ช่วยป้องกันการเขียนโค้ดเกินความจำเป็น (Over-engineering) และทำให้มั่นใจในความถูกต้องของโค้ดทุกก้าว
+
+---
+
+## B3. Property-Based Testing Plan (Hypothesis)
+
+### 1. การกำหนด Invariants และ Properties
+แตกต่างจาก Example-based Testing ที่ทดสอบเฉพาะค่าคงที่ โดย Property-Based Testing กำหนดคุณสมบัติสัจพจน์ (Invariants) ที่ต้องเป็นจริงเสมอสำหรับชุดข้อมูลสุ่มจำนวนมาก:
+- **Property 1 (Bounded Result):** ยอดหลังหักส่วนลดต้องไม่ติดลบและไม่เกินยอดเดิมเสมอ ($0 \le \text{result} \le \text{amount}$)
+- **Property 2 (Identity Invariant):** ส่วนลด 0% ต้องให้ผลลัพธ์เท่ากับยอดตั้งต้นเสมอ
+- **Property 3 (Upper Limit Invariant):** ส่วนลด 100% ต้องให้ผลลัพธ์เป็น 0.0 เสมอ
+- **Property 4 (Monotonicity):** หากเปอร์เซ็นต์ส่วนลดเพิ่มขึ้น ยอดสุทธิหลังหักส่วนลดต้องน้อยลงหรือไม่เกินยอดเดิมเสมอ
+
+### 2. ประโยชน์ของการ Shrinking
+เมื่อ Hypothesis พบค่าที่ทำให้ Property ล้มเหลว ระบบจะทำการ "Shrink" หรือลดทอนชุดข้อมูลนำเข้าจนเหลือกรณีที่เล็กและเรียบง่ายที่สุด (Minimal Failing Example) ทำให้ผู้พัฒนาวิเคราะห์หาสาเหตุของ Bug ได้ทันที
+
+---
+
+## B4. สิ่งที่ได้เรียนรู้จาก Saboteur Testing และ CI
+
+1. **Test State Coverage vs Code Coverage (Tip 93):**
+   การที่ Code Coverage ถึง 100% ไม่ได้แปลว่าระบบปราศจาก Bug หากเราไม่ได้ทดสอบ State และ Boundary ให้ครอบคลุม การทดลอง Saboteur ด้วยการเปลี่ยน `< 0` เป็น `<= 0` แล้ว Test สามารถจับได้ทันที พิสูจน์ให้เห็นว่า Test ของเราตรวจสอบพฤติกรรมจริง ไม่ใช่แค่รันผ่านโค้ด
+2. **Automated Quality Gate ผ่าน GitHub Actions:**
+   CI ช่วยทำหน้าที่เป็นประตูป้องกัน (Gatekeeper) ตรวจสอบความถูกต้องของโค้ดในทุก Pull Request แบบอัตโนมัติ ช่วยลดความผิดพลาดจาก Human Error และป้องกันไม่ให้โค้ดที่มีข้อบกพร่องถูก Merge เข้าสู่ Main Branch
+
