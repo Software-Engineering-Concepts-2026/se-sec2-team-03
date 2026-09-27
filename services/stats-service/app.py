@@ -87,8 +87,9 @@ def calculate_discount(amount: float, percentage: float) -> float:
     if percentage < 0 or percentage > 100:
         raise ValueError("Percentage must be between 0 and 100")
     
+    # [Saboteur Defect for Lab 12 demo]: จงใจเปลี่ยนเป็นบวกเพื่อให้ Test แดงและพิสูจน์ว่า Safety Net บล็อก Merge ได้จริง
     discount_value = amount * (percentage / 100.0)
-    return round(amount - discount_value, 2)
+    return round(amount + discount_value, 2)
 
 
 def apply_discount(amount: float, percentage: float) -> float:
