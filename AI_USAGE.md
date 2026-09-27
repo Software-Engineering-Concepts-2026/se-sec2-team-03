@@ -295,4 +295,48 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 ทีมได้ทบทวนโค้ดและ Assertion ทุกตัวเพื่อให้มั่นใจว่า:
 - ไม่มี Test ตัวใดที่เป็น Dummy Assertion (เช่น `assert True`) แต่ทดสอบ State และ Business Logic จริง
 - ทุกกรณีทดสอบมี Error message ที่ชัดเจนเมื่อเกิดข้อผิดพลาด
-- Workflow ของ CI สั่ง Fail และ Block การทำงานได้อย่างถูกต้องเมื่อมี Test ล้มเหลว
+- Workflow ของ CI สั่ง Fail และ Block การทำงานได้อย่างถูกต้องเมื่อมี Test ล้มเหลว
+
+---
+
+# AI Usage Disclosure — Lab 12B: Safety Net (Phase B)
+
+## AI Tool Used
+
+- **Tool:** Gemini / Antigravity AI
+- **Purpose:** ใช้ช่วยระดมความคิด (Brainstorm) ออกแบบ Test Cases (Happy Path, Boundary/Edge Cases, และ Error Cases) สำหรับฟังก์ชันจริงของทีม `calculate_discount` ใน `services/stats-service/app.py`
+- **Human Responsibility:** ทีมคัดเลือกชุดทดสอบด้วยตนเอง ตรวจสอบความถูกต้องตาม AAA Pattern ทุกบรรทัด ดำเนินการสร้างไฟล์ `tests/conftest.py` และ `tests/test_safety_net.py` และทดสอบรัน Local Pytest พร้อมวัด Coverage
+
+---
+
+## Prompts Used
+
+### Prompt 1: Brainstorm Test Cases for Team Function
+
+> นี่คือฟังก์ชันของโปรเจกต์ผม `calculate_discount(amount: float, percentage: float) -> float`
+> 
+> ช่วยเสนอ test cases แบ่งเป็น 3 กลุ่ม: happy path / edge cases / error cases
+> โดยแต่ละข้อให้บอกว่า "ทำไมถึงคุ้มค่าที่จะเทสต์" ยังไม่ต้องเขียนโค้ด
+> และชี้ด้วยว่ามี boundary ตรงไหนที่คนมักลืม
+
+**นำไปใช้กับ:** การออกแบบชุดทดสอบใน `tests/test_safety_net.py`
+
+---
+
+## Direct AI Output
+
+ส่วนต่อไปนี้เป็นเนื้อหาที่รับคำแนะนำจาก AI:
+1. การระบุขอบเขต Boundary ล่าง (0%) และ Boundary บน (100%)
+2. การเตือนเรื่องความแม่นยำของทศนิยม (Rounding precision 2 ตำแหน่ง)
+3. โครงสร้าง AAA Pattern และการจัดวาง `tests/conftest.py`
+
+---
+
+## Team-Written Code & Implementation
+
+ทีมเป็นผู้ตรวจสอบและควบคุมการนำไปใช้:
+1. ทีมคัดเลือกเคสทดสอบ 6 เคส (2 Happy Path, 2 Edge Cases, 2 Error Cases)
+2. เขียนโค้ด Unit Test ตามโครงสร้าง Arrange-Act-Assert พร้อม Docstring กำกับชัดเจน
+3. รัน Pytest และตรวจสอบรายงาน Coverage ผ่าน local environment (ผ่านครบ 6/6 เคส)
+4. ยึดกติกาไม่ให้ AI เขียนโค้ดคู่กับเทสต์พร้อมกัน เพื่อป้องกันกรณี "ผ่านเพราะผิดทั้งคู่"
+

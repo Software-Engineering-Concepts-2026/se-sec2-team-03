@@ -9,6 +9,11 @@ __pycache__/
 *$py.class
 venv/
 ENV/
+.pytest_cache/
+.coverage
+.hypothesis/
+htmlcov/
+
 
 # Node.js
 node_modules/
