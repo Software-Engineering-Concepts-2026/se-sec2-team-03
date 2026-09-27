@@ -1,6 +1,7 @@
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Import from existing codebase (services/stats-service/app.py)
 SERVICES_DIR = Path(__file__).resolve().parent.parent.parent / "services" / "stats-service"
@@ -8,7 +9,6 @@ if str(SERVICES_DIR) not in sys.path:
     sys.path.insert(0, str(SERVICES_DIR))
 
 from app import calculate_discount
-
 
 # ==============================================================================
 # Unit Tests: Equivalence Partitioning & Boundary Value Analysis (AAA Pattern)

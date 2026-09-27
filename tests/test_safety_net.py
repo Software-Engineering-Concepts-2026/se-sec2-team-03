@@ -8,7 +8,6 @@ Test suite applying AAA pattern across:
 import pytest
 from app import calculate_discount
 
-
 # ==============================================================================
 # 1. Happy Path Cases
 # ==============================================================================
