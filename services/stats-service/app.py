@@ -1,10 +1,10 @@
-import os
 import time
 from pathlib import Path
-from typing import Dict, Any, List
-from fastapi import FastAPI, BackgroundTasks
-from fastapi.staticfiles import StaticFiles
+from typing import Any
+
+from fastapi import BackgroundTasks, FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 # สร้าง FastAPI Application หลักของระบบ
 app = FastAPI(
@@ -51,7 +51,7 @@ def health():
 
 
 @app.get("/api/stats")
-def get_expense_stats() -> Dict[str, Any]:
+def get_expense_stats() -> dict[str, Any]:
     """ดึงข้อมูลสถิติสรุปรายจ่าย ยอดรวม และแยกตามหมวดหมู่"""
     return {
         "currency": "THB",

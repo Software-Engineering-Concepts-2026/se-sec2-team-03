@@ -253,3 +253,25 @@ AI ควรเป็นเครื่องมือช่วยในกา�
 2. **Automated Quality Gate ผ่าน GitHub Actions:**
    CI ช่วยทำหน้าที่เป็นประตูป้องกัน (Gatekeeper) ตรวจสอบความถูกต้องของโค้ดในทุก Pull Request แบบอัตโนมัติ ช่วยลดความผิดพลาดจาก Human Error และป้องกันไม่ให้โค้ดที่มีข้อบกพร่องถูก Merge เข้าสู่ Main Branch
 
+---
+
+# Reflection — Post-Quiz 12 (Lab 12B: Safety Net Sprint)
+
+## 1. สิ่งที่ได้เรียนรู้
+- ได้เรียนรู้และลงมือสร้าง **Safety Net** ที่แท้จริงให้กับโปรเจกต์ของทีม โดยการผสาน Unit Tests (AAA Pattern), Coverage Report, GitHub Actions CI และ Branch Protection Rules เข้าด้วยกัน
+- เข้าใจอย่างลึกซึ้งว่า CI ที่ไม่มี Branch Protection ก็เป็นเพียง "ของประดับ" แต่เมื่อเปิดใช้ Required Status Checks ร่วมกับ Branch Protection หุ่นยนต์ CI จะกลายเป็น Gatekeeper ที่คอยปกป้อง Branch `main` ไม่ให้โค้ดที่มีข้อผิดพลาดหลุดรอดเข้าไปได้
+
+## 2. สิ่งที่ทำได้ดี
+- สามารถเลือกฟังก์ชัน Core Business Logic (`calculate_discount`) ของทีมและออกแบบ Unit Test ได้ครอบคลุมทั้ง 3 กลุ่ม (Happy Path, Boundary/Edge Cases, และ Error Cases) รวม 6 เคส
+- เขียน Test ตาม AAA Pattern ชัดเจน และวัดผล Coverage ได้ 100% สำหรับฟังก์ชันที่เลือก
+- สามารถตั้งค่า `.github/workflows/ci.yml` รันคู่ขนาน 2 Jobs (`lint` ด้วย Ruff และ `test` ด้วย Pytest) ได้อย่างราบรื่นโดยไม่มีข้อผิดพลาด
+
+## 3. สิ่งที่พบว่ายังมีปัญหาและวิธีแก้ไข
+- ในช่วงแรก โค้ดเดิมมีข้อผิดพลาดเรื่อง Linting (unused imports และ formatting) ทำให้ Job `lint` มีโอกาสล้มเหลว จึงได้ใช้คำสั่ง `ruff check . --fix` ในการจัดระเบียบโค้ดให้สะอาดเรียบร้อยก่อน Push
+- ในช่วงทดสอบ Saboteur Defect เพื่อพิสูจน์ว่าระบบบล็อกได้จริง พบว่าปุ่ม Merge ยังสามารถกดได้ เนื่องจากยังไม่ได้ติ๊กเลือกให้ status check `test` เป็น "Required" ใน Branch Protection จึงได้เข้าไปแก้ไขและเปิด "Do not allow bypassing" ทำให้เห็นสถานะ "Merging is blocked" ได้อย่างสมบูรณ์
+
+## 4. สิ่งที่จะนำไปใช้ต่อใน Sprint ถัดไปและ Demo Day
+- นำ Safety Net นี้ไปใช้เป็นมาตรฐานในการส่งโค้ดทุกครั้ง (Pull Request Workflow) เพื่อให้สมาชิกในทีมมั่นใจทุกครั้งที่รวมโค้ด
+- ขยายการเขียน Unit Test ให้ครอบคลุมฟังก์ชันคำนวณและประมวลผลข้อมูลอื่น ๆ ของระบบ DaybyDay ก่อนถึงวัน Demo Day
+
+
