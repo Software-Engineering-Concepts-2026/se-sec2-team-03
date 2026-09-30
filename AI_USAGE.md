@@ -299,17 +299,19 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 
 ---
 
-# AI Usage Disclosure — Lab 12B: Safety Net (Phase B)
+# AI Usage Disclosure — Lab 12B (W12): Safety Net Sprint
 
 ## AI Tool Used
 
 - **Tool:** Gemini / Antigravity AI
-- **Purpose:** ใช้ช่วยระดมความคิด (Brainstorm) ออกแบบ Test Cases (Happy Path, Boundary/Edge Cases, และ Error Cases) สำหรับฟังก์ชันจริงของทีม `calculate_discount` ใน `services/stats-service/app.py`
-- **Human Responsibility:** ทีมคัดเลือกชุดทดสอบด้วยตนเอง ตรวจสอบความถูกต้องตาม AAA Pattern ทุกบรรทัด ดำเนินการสร้างไฟล์ `tests/conftest.py` และ `tests/test_safety_net.py` และทดสอบรัน Local Pytest พร้อมวัด Coverage
+- **Purpose:** 
+  1. ใช้ช่วยระดมความคิด (Brainstorm) ออกแบบ Test Cases (Happy Path, Boundary/Edge Cases, และ Error Cases) สำหรับฟังก์ชันจริงของทีม `calculate_discount` ใน `services/stats-service/app.py`
+  2. ใช้ช่วยออกแบบโครงสร้าง GitHub Actions CI Workflow (`.github/workflows/ci.yml`) สำหรับรัน `ruff` และ `pytest`
+- **Human Responsibility:** ทีมคัดเลือกชุดทดสอบด้วยตนเอง ตรวจสอบความถูกต้องตาม AAA Pattern ทุกบรรทัด ดำเนินการสร้างไฟล์ `tests/conftest.py`, `tests/test_safety_net.py`, แก้ไข Linting ข้อผิดพลาด และทดสอบรัน Local Pytest พร้อมวัด Coverage
 
 ---
 
-## Prompts Used
+## Prompts Used (>= 2 Prompts)
 
 ### Prompt 1: Brainstorm Test Cases for Team Function
 
@@ -319,7 +321,17 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 > โดยแต่ละข้อให้บอกว่า "ทำไมถึงคุ้มค่าที่จะเทสต์" ยังไม่ต้องเขียนโค้ด
 > และชี้ด้วยว่ามี boundary ตรงไหนที่คนมักลืม
 
-**นำไปใช้กับ:** การออกแบบชุดทดสอบใน `tests/test_safety_net.py`
+**นำไปใช้กับ:** การออกแบบชุดทดสอบใน `tests/test_safety_net.py` (ทีมคัดเลือกนำมาเขียนจริง 6 เคส)
+
+---
+
+### Prompt 2: Design CI Workflow for Lint & Test
+
+> ช่วยแนะนำโครงสร้าง `.github/workflows/ci.yml` ที่มี 2 jobs รันขนานกัน:
+> 1. Job `lint`: ใช้ ruff ตรวจสอบรูปแบบโค้ด
+> 2. Job `test`: ติดตั้ง dependencies จาก requirements.txt และรัน pytest พร้อมวัด coverage ของ services/stats-service
+
+**นำไปใช้กับ:** การสร้าง `.github/workflows/ci.yml` และเตรียม `requirements.txt` ที่ Root
 
 ---
 
@@ -328,15 +340,18 @@ AI ถูกใช้เป็นเครื่องมือช่วยใ�
 ส่วนต่อไปนี้เป็นเนื้อหาที่รับคำแนะนำจาก AI:
 1. การระบุขอบเขต Boundary ล่าง (0%) และ Boundary บน (100%)
 2. การเตือนเรื่องความแม่นยำของทศนิยม (Rounding precision 2 ตำแหน่ง)
-3. โครงสร้าง AAA Pattern และการจัดวาง `tests/conftest.py`
+3. โครงสร้างพื้นฐานของ GitHub Actions Workflow YAML
 
 ---
 
 ## Team-Written Code & Implementation
 
 ทีมเป็นผู้ตรวจสอบและควบคุมการนำไปใช้:
-1. ทีมคัดเลือกเคสทดสอบ 6 เคส (2 Happy Path, 2 Edge Cases, 2 Error Cases)
+1. ทีมคัดเลือกเคสทดสอบ 6 เคส (2 Happy Path, 2 Edge Cases, 2 Error Cases) และเขียนโค้ดจริง
 2. เขียนโค้ด Unit Test ตามโครงสร้าง Arrange-Act-Assert พร้อม Docstring กำกับชัดเจน
-3. รัน Pytest และตรวจสอบรายงาน Coverage ผ่าน local environment (ผ่านครบ 6/6 เคส)
-4. ยึดกติกาไม่ให้ AI เขียนโค้ดคู่กับเทสต์พร้อมกัน เพื่อป้องกันกรณี "ผ่านเพราะผิดทั้งคู่"
+3. ตรวจสอบโค้ดด้วย `ruff check . --fix` และแก้ไขปัญหา import ด้วยตนเอง
+4. รัน Pytest และตรวจสอบรายงาน Coverage ผ่าน local environment (ผ่านครบ 6/6 เคส)
+5. ทำการทดลอง Saboteur Defect ด้วยตนเองเพื่อพิสูจน์ว่า Branch Protection บล็อก Merge ได้จริง
+6. ตรวจสอบแล้วว่าเข้าใจโค้ดทุกบรรทัดที่ส่ง ✅
+
 
