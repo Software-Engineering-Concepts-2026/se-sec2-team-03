@@ -110,6 +110,22 @@ def redirect_to_expenses_prototype():
     )
 
 
+@app.get("/dashboard")
+def redirect_to_dashboard():
+    """ทำ Redirect ไปยังหน้า Web App Prototype แดชบอร์ดภาพรวมของอริญชัย"""
+    return RedirectResponse(
+        url="/prototypes/sprint1/Arinchai_dashboard_prototype.html"
+    )
+
+
+@app.get("/tasks")
+def redirect_to_tasks():
+    """ทำ Redirect ไปยังหน้า Web App Prototype เพิ่มงานของสลิลทิพย์"""
+    return RedirectResponse(
+        url="/prototypes/sprint1/Salintip_AddTask_prototype.html"
+    )
+
+
 # ==========================================
 # 3. Worker (การประมวลผล Background Jobs)
 # ==========================================

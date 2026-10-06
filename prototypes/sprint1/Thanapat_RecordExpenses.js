@@ -31,6 +31,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const STORAGE_KEY_TRANSACTIONS = 'expense_tracker_transactions';
   const STORAGE_KEY_TOTAL = 'expense_tracker_total';
   const STORAGE_KEY_CATEGORIES = 'expense_tracker_category_totals';
+  const STORAGE_KEY_PERSONA = 'daybyday_current_persona';
+
+  let currentPersona = localStorage.getItem(STORAGE_KEY_PERSONA) || 'persona1';
+
+  const personaMeta = {
+    persona1: {
+      name: 'กิตติศักดิ์ ชัยวงศ์ (กิต)',
+      role: '👔 พนักงานออฟฟิศ (PM)',
+      avatar: 'img/Image%20(1).jpg'
+    },
+    persona2: {
+      name: 'อิศรา ศรีจำปา (อิ๋ม)',
+      role: '🎓 นักศึกษา & บาริสต้า',
+      avatar: 'img/Image.jpg'
+    }
+  };
+
+  const updatePersonaDisplay = (pId) => {
+    currentPersona = pId;
+    localStorage.setItem(STORAGE_KEY_PERSONA, pId);
+    const meta = personaMeta[pId] || personaMeta.persona1;
+    const avatarEl = document.getElementById('expense-avatar');
+    const nameEl = document.getElementById('expense-persona-name');
+    const roleEl = document.getElementById('expense-persona-role');
+    const btn1 = document.getElementById('btn-expense-persona-1');
+    const btn2 = document.getElementById('btn-expense-persona-2');
+    if (avatarEl) avatarEl.src = decodeURIComponent(meta.avatar);
+    if (nameEl) nameEl.textContent = `บันทึกรายจ่าย: ${meta.name}`;
+    if (roleEl) roleEl.textContent = meta.role;
+    if (btn1) btn1.classList.toggle('active', pId === 'persona1');
+    if (btn2) btn2.classList.toggle('active', pId === 'persona2');
+  };
+
+  const btnP1 = document.getElementById('btn-expense-persona-1');
+  const btnP2 = document.getElementById('btn-expense-persona-2');
+  if (btnP1) btnP1.addEventListener('click', () => updatePersonaDisplay('persona1'));
+  if (btnP2) btnP2.addEventListener('click', () => updatePersonaDisplay('persona2'));
 
   let currentCategoryTotals = {};
   let totalExpense = 12500.00;
@@ -73,9 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Navigation Links Active Toggle ---
   navItems.forEach((nav) => {
     nav.addEventListener('click', (e) => {
-      e.preventDefault();
-      navItems.forEach((item) => item.classList.remove('active'));
-      nav.classList.add('active');
+      const href = nav.getAttribute('href');
+      if (!href || href === '#') {
+        e.preventDefault();
+        navItems.forEach((item) => item.classList.remove('active'));
+        nav.classList.add('active');
+      }
+      // If href has a valid URL/file path, allow the browser to navigate normally
     });
   });
 
@@ -332,4 +373,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize application
   setTodayDate();
   loadStateFromStorage();
+  updatePersonaDisplay(currentPersona);
 });
