@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Life & Finance Dashboard - Arinchai</title>
+    <title>DaybyDay - Life & Finance Dashboard</title>
     <link rel="stylesheet" href="Arinchai_dashboard_style.css" />
   </head>
   <body>
@@ -15,96 +15,194 @@
           <div class="brand-icon">📅</div>
           <div>
             <h1>DaybyDay</h1>
+            <p>Life Data Dashboard</p>
           </div>
         </div>
 
         <nav class="nav-links">
-          <a class="nav-item active" href="#">📊 Dashboard</a>
-          <a class="nav-item" href="#">🏃 Health</a>
-          <a class="nav-item" href="#">✅ Tasks</a>
-          <a class="nav-item" href="#">💰 Finance</a>
-          <a class="nav-item" href="#">👤 Account</a>
+          <a class="nav-item active" href="Arinchai_dashboard_prototype.html">
+            <span>📊</span> แดชบอร์ดภาพรวม
+          </a>
+          <a class="nav-item" href="Thanapat_RecordExpenses_prototype.html">
+            <span>💰</span> บันทึกรายจ่าย
+          </a>
+          <a class="nav-item" href="Salintip_AddTask_prototype.html">
+            <span>✅</span> จัดการงาน / เพิ่มงาน
+          </a>
         </nav>
+
+        <!-- Persona Switcher ตามข้อกำหนดของลูกค้า (Persona 1 & Persona 2) -->
+        <div class="persona-switcher-box">
+          <div class="persona-title">
+            <span>👤 สลับผู้ใช้งาน (Persona)</span>
+          </div>
+          <div class="persona-btn-group">
+            <button class="persona-pill-btn active" id="btn-persona-1" data-persona="persona1">
+              <img src="img/Image%20(1).jpg" alt="กิตติศักดิ์" class="persona-pill-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'">
+              <div>
+                <strong style="display:block;">กิตติศักดิ์ (กิต)</strong>
+                <span style="font-size:0.75rem; color:rgba(255,255,255,0.7);">พนักงานออฟฟิศ (PM)</span>
+              </div>
+            </button>
+            <button class="persona-pill-btn" id="btn-persona-2" data-persona="persona2">
+              <img src="img/Image.jpg" alt="อิศรา" class="persona-pill-img" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80'">
+              <div>
+                <strong style="display:block;">อิศรา (อิ๋ม)</strong>
+                <span style="font-size:0.75rem; color:rgba(255,255,255,0.7);">นักศึกษา & บาริสต้า</span>
+              </div>
+            </button>
+          </div>
+        </div>
       </aside>
 
       <!-- พื้นที่เนื้อหาหลัก (Main Panel) -->
       <main class="main-panel">
         
-        <!-- การ์ดส่วนหัว (Hero Card) -->
-        <section class="hero-card">
-          <div class="hero-top">
-            <p>Welcome Back, Arinchai</p>
-            <span>Oct 26, 2023</span>
+        <!-- การ์ดส่วนหัว (Hero Card Dynamic ตาม Persona) -->
+        <section class="hero-card" id="hero-card">
+          <div class="hero-left">
+            <img src="img/Image%20(1).jpg" alt="Avatar" class="hero-avatar" id="hero-avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'">
+            <div class="hero-info">
+              <span class="hero-role-tag" id="hero-role-tag">👔 พนักงานออฟฟิศระดับกลาง (Project Manager)</span>
+              <h2 id="hero-name">สวัสดีตอนเช้า, กิตติศักดิ์ ชัยวงศ์</h2>
+              <p class="hero-sub" id="hero-sub">“ถ้าฉันรู้ว่าตัวเลขบอกอะไร ฉันก็จะตัดสินใจทำสิ่งต่าง ๆ ได้ดีกว่า”</p>
+            </div>
           </div>
-          <h2>Dashboard Overview</h2>
+          <div class="hero-right">
+            <span class="hero-date" id="hero-date">วันพุธที่ 7 ตุลาคม 2026</span>
+            <div class="routine-badge" id="hero-routine">🌅 เช็คสุขภาพ & การเงิน 15 นาทีก่อนเริ่มงาน</div>
+          </div>
         </section>
 
         <!-- กริดแสดงผล 3 คอลัมน์ย่อย -->
         <div class="grid-container">
           
-          <!-- สถานะสุขภาพ -->
+          <!-- 1. สถานะสุขภาพและเป้าหมายชีวิต -->
           <section class="summary-card">
             <div class="section-title">
-              <h3>Health Status</h3>
+              <h3><span>🏃</span> ข้อมูลสุขภาพ & กิจวัตร</h3>
             </div>
-            <div class="metric">🏃 Steps: <span class="text-accent">8,432</span></div>
-            <div class="metric">🌙 Sleep: <span>7.5 hrs</span></div>
+            <div id="health-metrics">
+              <!-- Render by JS -->
+            </div>
           </section>
 
-          <!-- งานประจำวัน -->
+          <!-- 2. งานประจำวัน (Daily Tasks) เชื่อมโยงกับ Salintip_AddTask -->
           <section class="summary-card">
             <div class="section-title">
-              <h3>Daily Tasks</h3>
+              <h3><span>✅</span> ภารกิจประจำวัน</h3>
+              <a href="Salintip_AddTask_prototype.html" class="action-link-btn">+ เพิ่มงาน</a>
             </div>
-            <label class="task-label"><input type="checkbox"> Review project board</label>
-            <label class="task-label"><input type="checkbox"> Call Sarah (Health)</label>
-            <label class="task-label"><input type="checkbox"> Submit sprint report</label>
+            <div class="task-list" id="task-list">
+              <!-- Render by JS -->
+            </div>
           </section>
 
-          <!-- สถานะการเงิน -->
+          <!-- 3. สถานะการเงินภาพรวม เชื่อมโยงกับ Thanapat_RecordExpenses -->
           <section class="summary-card">
             <div class="section-title">
-              <h3>Financial Snapshot</h3>
+              <h3><span>💰</span> สรุปยอดการเงิน</h3>
+              <a href="Thanapat_RecordExpenses_prototype.html" class="action-link-btn">บันทึกละเอียด →</a>
             </div>
-            <div class="metric">Balance: <strong class="text-accent">฿21,432</strong></div>
-            <div class="metric">Income: <span class="text-green">฿1,200</span></div>
-            <div class="metric">Expense: <span class="text-red">฿350</span></div>
+            <div class="metric">ยอดคงเหลือ: <strong class="text-accent" id="metric-balance">฿45,200</strong></div>
+            <div class="metric">รายรับเดือนนี้: <span class="text-green" id="metric-income">฿65,000</span></div>
+            <div class="metric">รายจ่ายเดือนนี้: <span class="text-red" id="metric-expense">฿19,800</span></div>
           </section>
         </div>
 
-        <!-- กราฟแนวโน้ม -->
-        <section class="summary-card">
-          <div class="section-title">
-            <h3>Weekly Finance Trend</h3>
-          </div>
-          <div class="chart-placeholder">
-            <span class="muted-text">[ Multidimensional Chart: Income (Green) vs Expenses (Red) ]</span>
-          </div>
-        </section>
+        <!-- แถวด้านล่าง: ความก้าวหน้าเป้าหมาย + กราฟแนวโน้มแบบ Side-by-Side ไม่ต้องเลื่อนจอ -->
+        <div class="bottom-grid-container">
+          <!-- ความคืบหน้าเป้าหมายระยะยาว (Goals Progress Bar ตามที่ Persona 1 และ 2 ต้องการ) -->
+          <section class="summary-card">
+            <div class="section-title">
+              <h3><span>🎯</span> ความก้าวหน้าเป้าหมายหลัก (Goal Progress Bars)</h3>
+              <span style="font-size: 0.78rem; color: var(--muted);" id="goals-subtitle">ตรวจสอบก่อนปิดแล็ปท็อป</span>
+            </div>
+            <div id="goals-container">
+              <!-- Render by JS -->
+            </div>
+          </section>
+
+          <!-- กราฟแนวโน้มการเงินและข้อมูลรายสัปดาห์ -->
+          <section class="summary-card">
+            <div class="section-title">
+              <h3><span>📈</span> แนวโน้มรายรับ-รายจ่ายรายสัปดาห์</h3>
+              <span style="font-size: 0.78rem; color: var(--muted);">อัปเดตอัตโนมัติ</span>
+            </div>
+            <div class="chart-container">
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 60%; background: #10b981;"></div>
+                <span class="chart-label">จ.</span>
+              </div>
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 45%; background: #6c63ff;"></div>
+                <span class="chart-label">อ.</span>
+              </div>
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 80%; background: #10b981;"></div>
+                <span class="chart-label">พ.</span>
+              </div>
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 55%; background: #ef4444;"></div>
+                <span class="chart-label">พฤ.</span>
+              </div>
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 90%; background: #10b981;"></div>
+                <span class="chart-label">ศ.</span>
+              </div>
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 35%; background: #f59e0b;"></div>
+                <span class="chart-label">ส.</span>
+              </div>
+              <div class="chart-bar-col">
+                <div class="chart-bar" style="height: 70%; background: #6c63ff;"></div>
+                <span class="chart-label">อา.</span>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
 
-      <!-- แถบจัดการข้อมูลด้านขวา (Right Sidebar) -->
+      <!-- แถบจัดการข้อมูลด่วนด้านขวา (Right Sidebar) -->
       <aside class="sidebar right-sidebar">
         <div class="section-title">
-          <h3>Quick Financial Log</h3>
+          <h3><span>⚡</span> บันทึกการเงินด่วน (Quick Log)</h3>
         </div>
+        <p style="font-size: 0.82rem; color: var(--muted); margin: -6px 0 10px 0;">
+          บันทึกได้ทันทีในหน้าเดียว ไม่ต้องสลับหน้าจอหลายแอป
+        </p>
 
         <label class="field">
-          <span>Transaction Amount (฿)</span>
-          <input type="number" id="amount" placeholder="e.g., 500" />
+          <span>จำนวนเงิน (บาท)</span>
+          <input type="number" id="amount" placeholder="เช่น 150" />
         </label>
 
         <div class="category-section">
-          <span>Type</span>
+          <span>ประเภทธุรกรรม</span>
           <div class="category-grid">
-            <button class="chip active">📈 Income</button>
-            <button class="chip">📉 Expense</button>
+            <button class="chip active" type="button" data-type="income">📈 รายรับ</button>
+            <button class="chip" type="button" data-type="expense">📉 รายจ่าย</button>
           </div>
           <input type="hidden" id="trans-type" value="income">
         </div>
 
-        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
-          <button id="add-log-btn" class="primary-btn">✓ Add Log</button>
+        <label class="field">
+          <span>บันทึกข้อความสั้น</span>
+          <input type="text" id="log-note" placeholder="เช่น ค่าข้าวเที่ยง, รายได้พิเศษ" />
+        </label>
+
+        <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+          <button id="add-log-btn" class="primary-btn">✓ บันทึกรายการ</button>
+          <a href="Thanapat_RecordExpenses_prototype.html" class="outline-btn">
+            เปิดหน้าบันทึกรายจ่ายแบบละเอียด ↗
+          </a>
+        </div>
+
+        <div style="margin-top: auto; padding: 14px; background: #f8fafc; border-radius: 14px; border: 1px dashed var(--border);">
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text); display: block; margin-bottom: 4px;">🔗 การเชื่อมต่อระบบ</span>
+          <p style="font-size: 0.76rem; color: var(--muted); margin: 0;">
+            ข้อมูลจะถูกบันทึกลง LocalStorage และเชื่อมโยงกับทุกหน้าในระบบ DaybyDay
+          </p>
         </div>
       </aside>
       

@@ -44,50 +44,146 @@ textarea {
 
 .left-sidebar {
   padding: 24px 18px;
-  background: linear-gradient(180deg, #2f2a48 0%, #1b1631 100%);
+  background: linear-gradient(180deg, #242038 0%, #171328 100%);
   color: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .brand-icon {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.15);
-  font-size: 20px;
+  background: linear-gradient(135deg, #6c63ff 0%, #a855f7 100%);
+  font-size: 22px;
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.4);
 }
 
-.brand h1,
+.brand h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
 .brand p {
   margin: 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .nav-links {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 24px;
 }
 
 .nav-item {
   color: rgba(255, 255, 255, 0.82);
   text-decoration: none;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 12px;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
 }
 
-.nav-item:hover,
-.nav-item.active {
-  background: rgba(255, 255, 255, 0.16);
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.12);
   color: white;
+  transform: translateX(3px);
+}
+
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(108, 99, 255, 0.5) 0%, rgba(108, 99, 255, 0.25) 100%);
+  color: #ffffff;
+  font-weight: 600;
+  border-left: 3px solid #a855f7;
+}
+
+/* Persona Switcher Section in Sidebar */
+.persona-switcher-box {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 14px;
+  margin-top: auto;
+}
+
+.persona-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.persona-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.persona-pill-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.persona-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.persona-pill-btn.active {
+  background: rgba(108, 99, 255, 0.35);
+  border-color: #a855f7;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.persona-pill-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.hero-profile-badge img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
 }
 
 .main-panel {

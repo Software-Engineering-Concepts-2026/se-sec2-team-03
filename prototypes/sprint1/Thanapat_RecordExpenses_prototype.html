@@ -18,19 +18,53 @@
         </div>
 
         <nav class="nav-links">
-          <a class="nav-item" href="#">👤 โปรไฟล์</a>
-          <a class="nav-item active" href="#">📊 สรุปผล</a>
-          <a class="nav-item" href="#">🧾 รายการล่าสุด</a>
-          <a class="nav-item" href="#">➕ เพิ่มรายจ่าย</a>
-          <a class="nav-item" href="#">⚙️ ตั้งค่า</a>
+          <a class="nav-item" href="Arinchai_dashboard_prototype.html">
+            <span>📊</span> แดชบอร์ดภาพรวม
+          </a>
+          <a class="nav-item active" href="Thanapat_RecordExpenses_prototype.html">
+            <span>💰</span> บันทึกรายจ่าย
+          </a>
+          <a class="nav-item" href="Salintip_AddTask_prototype.html">
+            <span>✅</span> จัดการงาน / เพิ่มงาน
+          </a>
         </nav>
+
+        <!-- Persona Switcher -->
+        <div class="persona-switcher-box">
+          <div class="persona-title">
+            <span>👤 สลับผู้ใช้งาน (Persona)</span>
+          </div>
+          <div class="persona-btn-group">
+            <button class="persona-pill-btn active" id="btn-expense-persona-1" data-persona="persona1">
+              <img src="img/Image%20(1).jpg" alt="กิตติศักดิ์" class="persona-pill-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'">
+              <div>
+                <strong style="display:block;">กิตติศักดิ์ (กิต)</strong>
+                <span style="font-size:0.75rem; color:rgba(255,255,255,0.7);">พนักงานออฟฟิศ (PM)</span>
+              </div>
+            </button>
+            <button class="persona-pill-btn" id="btn-expense-persona-2" data-persona="persona2">
+              <img src="img/Image.jpg" alt="อิศรา" class="persona-pill-img" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80'">
+              <div>
+                <strong style="display:block;">อิศรา (อิ๋ม)</strong>
+                <span style="font-size:0.75rem; color:rgba(255,255,255,0.7);">นักศึกษา & บาริสต้า</span>
+              </div>
+            </button>
+          </div>
+        </div>
       </aside>
 
       <main class="main-panel">
         <section class="hero-card">
+          <div class="hero-profile-badge">
+            <img id="expense-avatar" src="img/Image%20(1).jpg" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'">
+            <div>
+              <span id="expense-persona-role" style="font-size: 0.8rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 12px;">👔 พนักงานออฟฟิศ (PM)</span>
+              <h3 id="expense-persona-name" style="margin: 4px 0 0 0; font-size: 1.15rem; color: white;">บันทึกรายจ่าย: กิตติศักดิ์ ชัยวงศ์</h3>
+            </div>
+          </div>
           <div class="hero-top">
             <p>ยอดรายจ่ายเดือนนี้</p>
-            <span>กรกฎาคม 2026</span>
+            <span>ตุลาคม 2026</span>
           </div>
           <h2 id='totalExpense'>฿ 12,500.00</h2>
         </section>

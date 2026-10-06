@@ -1,112 +1,316 @@
-<!--
-  A centered card for creating a new work/task.
-
-  Layout:
-  - A top navigation bar with a back arrow and the title "Add work".
-  - A text input field labeled "Task" for entering the task name.
-  - A large textarea labeled "Descriptions" for additional task details.
-  - A date picker labeled "Date".
-  - A time picker labeled "Time".
-  - A dropdown selection labeled "Category" for choosing the task category.
-  - A "Level of importance" section with three radio button options:
-      - Low
-      - Medium
-      - High
-  - Two action buttons at the bottom:
-      - "Save" to save the task.
-      - "Cancel" to discard the changes.
--->
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Task Prototype</title>
-
+    <title>DaybyDay - เพิ่มงานและภารกิจ (Add Task)</title>
     <link rel="stylesheet" href="Salintip_AddTask_style.css">
 </head>
 
 <body>
 
-<div class="card">
-    <div class="card-header">
-        <button class="back-button" onclick="goBack()">&#8592;</button>
-        <h2>Add work</h2>
-    </div>
-
-    <div class="card-body">
-        <label for="task">Task</label>
-        <input type="text" id="task" name="task" placeholder="Enter task name">
-
-        <label for="description">Descriptions</label>
-        <textarea id="description" name="description" placeholder="Enter task details"></textarea>
-
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date">
-
-        <label for="time">Time</label>
-        <input type="time" id="time" name="time">
-
-        <label for="category">Category</label>
-        <select id="category" name="category">
-            <option value="">Select category</option>
-            <option value="work">Work</option>
-            <option value="personal">Personal</option>
-            <option value="other">Other</option>
-        </select>
-
-        <fieldset>
-            <legend>Level of importance</legend>
-            <label><input type="radio" name="importance" value="low"> Low</label>
-            <label><input type="radio" name="importance" value="medium"> Medium</label>
-            <label><input type="radio" name="importance" value="high"> High</label>
-        </fieldset>
-
-        <div class="action-buttons">
-            <button class="save-button" onclick="saveTask(event)">Save</button>
-            <button class="cancel-button" onclick="cancelTask()">Cancel</button>
+<div class="app-shell">
+    
+    <!-- แถบเมนูด้านซ้าย (Left Sidebar เชื่อมโยงทุกหน้า) -->
+    <aside class="sidebar left-sidebar">
+        <div class="brand">
+            <div class="brand-icon">📅</div>
+            <div>
+                <h1>DaybyDay</h1>
+                <p>Task & Life Manager</p>
+            </div>
         </div>
-    </div>
+
+        <nav class="nav-links">
+            <a class="nav-item" href="Arinchai_dashboard_prototype.html">
+                <span>📊</span> แดชบอร์ดภาพรวม
+            </a>
+            <a class="nav-item" href="Thanapat_RecordExpenses_prototype.html">
+                <span>💰</span> บันทึกรายจ่าย
+            </a>
+            <a class="nav-item active" href="Salintip_AddTask_prototype.html">
+                <span>✅</span> จัดการงาน / เพิ่มงาน
+            </a>
+        </nav>
+
+        <!-- Persona Switcher -->
+        <div class="persona-switcher-box">
+            <div class="persona-title">
+                <span>👤 สลับผู้ใช้งาน (Persona)</span>
+            </div>
+            <div class="persona-btn-group">
+                <button class="persona-pill-btn active" id="btn-task-p1" onclick="switchPersona('persona1')">
+                    <img src="img/Image%20(1).jpg" alt="กิตติศักดิ์" class="persona-pill-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'">
+                    <div>
+                        <strong style="display:block;">กิตติศักดิ์ (กิต)</strong>
+                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.7);">พนักงานออฟฟิศ (PM)</span>
+                    </div>
+                </button>
+                <button class="persona-pill-btn" id="btn-task-p2" onclick="switchPersona('persona2')">
+                    <img src="img/Image.jpg" alt="อิศรา" class="persona-pill-img" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80'">
+                    <div>
+                        <strong style="display:block;">อิศรา (อิ๋ม)</strong>
+                        <span style="font-size:0.75rem; color:rgba(255,255,255,0.7);">นักศึกษา & บาริสต้า</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- พื้นที่หลัก (Main Content) -->
+    <main class="main-panel">
+        <div class="top-header">
+            <a href="Arinchai_dashboard_prototype.html" class="back-link">
+                <span>&#8592;</span> กลับไปยังแดชบอร์ดหลัก
+            </a>
+            <div id="persona-badge-indicator" style="font-size: 0.88rem; background: #efeaff; color: #6c63ff; padding: 6px 14px; border-radius: 20px; font-weight: 600;">
+                กำลังเพิ่มงานสำหรับ: กิตติศักดิ์ ชัยวงศ์
+            </div>
+        </div>
+
+        <div class="task-form-container">
+            <!-- กล่องฟอร์มสร้างงาน -->
+            <div class="card">
+                <div class="card-header">
+                    <button class="back-button" onclick="goBack()">&#8592;</button>
+                    <h2>เพิ่มภารกิจใหม่ (Add work)</h2>
+                </div>
+
+                <div class="card-body">
+                    <label for="task">ชื่องาน / ภารกิจ (Task)</label>
+                    <input type="text" id="task" name="task" placeholder="เช่น ส่งเอกสาร Sprint Review, อ่านงานวิจัย 15 หน้า">
+
+                    <label for="description">รายละเอียดเพิ่มเติม (Descriptions)</label>
+                    <textarea id="description" name="description" placeholder="ระบุรายละเอียด เป้าหมาย หรือสิ่งที่ต้องเตรียม"></textarea>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div>
+                            <label for="date">วันที่ (Date)</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                        <div>
+                            <label for="time">เวลา (Time)</label>
+                            <input type="time" id="time" name="time">
+                        </div>
+                    </div>
+
+                    <label for="category">หมวดหมู่ภารกิจ (Category)</label>
+                    <select id="category" name="category">
+                        <option value="">-- เลือกหมวดหมู่ --</option>
+                        <option value="งานโปรเจกต์">💼 งานโปรเจกต์ / การทำงาน (Project Work)</option>
+                        <option value="การเรียน">🎓 การเรียน / งานวิจัย (Study & Research)</option>
+                        <option value="งานพิเศษ">☕ งานพิเศษร้านกาแฟ (Part-time Barista)</option>
+                        <option value="สุขภาพ">🏃 สุขภาพ / ออกกำลังกาย (Health & Fitness)</option>
+                        <option value="ครอบครัว">👨‍👩‍👧 ครอบครัว (Family)</option>
+                        <option value="ส่วนตัว">📖 ส่วนตัว / อ่านหนังสือ (Personal & Reading)</option>
+                        <option value="อื่นๆ">📦 อื่นๆ (Other)</option>
+                    </select>
+
+                    <fieldset>
+                        <legend>ระดับความสำคัญ (Level of importance)</legend>
+                        <div class="radio-group">
+                            <label><input type="radio" name="importance" value="low"> 🟢 ต่ำ (Low)</label>
+                            <label><input type="radio" name="importance" value="medium" checked> 🟡 ปานกลาง (Medium)</label>
+                            <label><input type="radio" name="importance" value="high"> 🔴 สูง (High)</label>
+                        </div>
+                    </fieldset>
+
+                    <div class="action-buttons">
+                        <button class="save-button" onclick="saveTask(event)">✓ บันทึกงาน (Save)</button>
+                        <button class="cancel-button" onclick="cancelTask()">✕ ยกเลิก (Cancel)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- กล่องแสดงรายการงานล่าสุดของ Persona นี้ -->
+            <div class="task-preview-panel">
+                <div class="task-preview-card">
+                    <h3><span>📋</span> ภารกิจปัจจุบันของผู้ใช้นี้</h3>
+                    <p style="font-size: 0.82rem; color: var(--muted); margin: 0 0 12px 0;">
+                        เชื่อมโยงข้อมูลกับแดชบอร์ดหลักทันที
+                    </p>
+                    <div class="task-mini-list" id="task-preview-list">
+                        <!-- Loaded by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
 </div>
 
 <script>
+const STORAGE_KEY_PERSONA = 'daybyday_current_persona';
+const STORAGE_KEY_TASKS = 'daybyday_tasks';
+
+let currentPersona = localStorage.getItem(STORAGE_KEY_PERSONA) || 'persona1';
+
+const personaDetails = {
+    persona1: {
+        name: 'กิตติศักดิ์ ชัยวงศ์ (กิต)',
+        role: 'พนักงานออฟฟิศ (PM)',
+        defaultTasks: [
+            { text: 'ตรวจเช็ค Sprint Review ของทีม Dev', category: 'งานโปรเจกต์', importance: 'high' },
+            { text: 'ประชุมสรุปแผนงานลดเวลา OT รายสัปดาห์', category: 'งานโปรเจกต์', importance: 'medium' },
+            { text: 'พาภรรยาและลูกสาวไปซื้อของเข้าบ้าน', category: 'ครอบครัว', importance: 'low' },
+            { text: 'วิ่งเบิร์นแคลอรี่ 30 นาที (เป้าลดน้ำหนัก)', category: 'สุขภาพ', importance: 'medium' }
+        ]
+    },
+    persona2: {
+        name: 'อิศรา ศรีจำปา (อิ๋ม)',
+        role: 'นักศึกษา & บาริสต้า',
+        defaultTasks: [
+            { text: 'ทบทวนคอร์ส Data Analytics และทำสรุป', category: 'การเรียน', importance: 'high' },
+            { text: 'อ่านเอกสารวิจัยเตรียมส่งตีพิมพ์ 15 หน้า', category: 'การเรียน', importance: 'high' },
+            { text: 'เข้ากะบาริสต้าที่ร้านกาแฟใน มอฯ', category: 'งานพิเศษ', importance: 'medium' },
+            { text: 'ทำ Reflection บันทึกเป้าหมายก่อนนอน 30 นาที', category: 'ส่วนตัว', importance: 'low' }
+        ]
+    }
+};
+
+function switchPersona(pId) {
+    currentPersona = pId;
+    localStorage.setItem(STORAGE_KEY_PERSONA, pId);
+
+    const btn1 = document.getElementById('btn-task-p1');
+    const btn2 = document.getElementById('btn-task-p2');
+    if (btn1) btn1.classList.toggle('active', pId === 'persona1');
+    if (btn2) btn2.classList.toggle('active', pId === 'persona2');
+
+    const badge = document.getElementById('persona-badge-indicator');
+    if (badge) {
+        badge.textContent = `กำลังเพิ่มงานสำหรับ: ${personaDetails[pId].name}`;
+    }
+
+    renderTaskPreview();
+}
+
+function renderTaskPreview() {
+    const listEl = document.getElementById('task-preview-list');
+    if (!listEl) return;
+
+    let saved = [];
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_TASKS);
+        saved = raw ? JSON.parse(raw) : [];
+    } catch(e) {}
+
+    const personaTasks = saved.filter(t => !t.persona || t.persona === currentPersona);
+    const presets = personaDetails[currentPersona].defaultTasks;
+
+    let html = '';
+    // Show custom saved tasks first
+    personaTasks.forEach(t => {
+        html += `
+            <div class="task-mini-item" style="border-left: 3px solid #6c63ff;">
+                <div class="task-mini-header">
+                    <span>${t.text}</span>
+                    <span style="font-size:0.75rem; color:#6c63ff;">เพิ่งเพิ่ม</span>
+                </div>
+                <div class="task-mini-sub">
+                    <span>📁 ${t.category}</span>
+                    <span>⚡ ${t.importance || 'medium'}</span>
+                    ${t.time ? `<span>⏰ ${t.time}</span>` : ''}
+                </div>
+            </div>
+        `;
+    });
+
+    // Show presets
+    presets.forEach(p => {
+        html += `
+            <div class="task-mini-item">
+                <div class="task-mini-header">
+                    <span>${p.text}</span>
+                </div>
+                <div class="task-mini-sub">
+                    <span>📁 ${p.category}</span>
+                    <span>⚡ ${p.importance}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    listEl.innerHTML = html;
+}
+
 function saveTask(event) {
-    // Prevent default action
-    event.preventDefault();
+    if (event) event.preventDefault();
 
-    // Get values
-    const task = document.getElementById("task").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const category = document.getElementById("category").value;
-    const importance = document.querySelector('input[name="importance"]:checked');
+    const taskInput = document.getElementById("task");
+    const descInput = document.getElementById("description");
+    const dateInput = document.getElementById("date");
+    const timeInput = document.getElementById("time");
+    const categoryInput = document.getElementById("category");
+    const importanceInput = document.querySelector('input[name="importance"]:checked');
 
-    // Check empty fields
-    if (
-        task === "" ||
-        description === "" ||
-        date === "" ||
-        time === "" ||
-        category === "" ||
-        !importance
-    ) {
-        alert("Please fill in all fields.");
+    const task = taskInput.value.trim();
+    const description = descInput.value.trim();
+    const date = dateInput.value;
+    const time = timeInput.value;
+    const category = categoryInput.value;
+    const importance = importanceInput ? importanceInput.value : "medium";
+
+    if (task === "" || category === "") {
+        alert("กรุณากรอกชื่องานและเลือกหมวดหมู่ให้ครบถ้วน");
+        if (!task) taskInput.focus();
+        else categoryInput.focus();
         return;
     }
 
-    alert("Task saved successfully! (This is a prototype)");
+    // Save to LocalStorage
+    let existingTasks = [];
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY_TASKS);
+        existingTasks = raw ? JSON.parse(raw) : [];
+    } catch(e) {}
+
+    const newTask = {
+        id: 'task-' + Date.now(),
+        text: task,
+        description: description,
+        date: date,
+        time: time,
+        category: category,
+        importance: importance,
+        persona: currentPersona,
+        done: false
+    };
+
+    existingTasks.unshift(newTask);
+    localStorage.setItem(STORAGE_KEY_TASKS, JSON.stringify(existingTasks));
+
+    // Reset Form
+    taskInput.value = "";
+    descInput.value = "";
+    renderTaskPreview();
+
+    const goToDashboard = confirm(`✓ บันทึกงาน "${task}" สำเร็จเรียบร้อย!\n\nข้อมูลเชื่อมโยงไปยังแดชบอร์ดหลักแล้ว ต้องการกลับไปดูหน้าแดชบอร์ดทันทีหรือไม่?`);
+    if (goToDashboard) {
+        window.location.href = "Arinchai_dashboard_prototype.html";
+    }
 }
 
 function cancelTask() {
-    if (confirm("Are you sure you want to cancel?")) {
-        window.history.back();
+    if (confirm("คุณต้องการยกเลิกและกลับไปยังหน้าแดชบอร์ดหรือไม่?")) {
+        window.location.href = "Arinchai_dashboard_prototype.html";
     }
 }
 
 function goBack() {
-    window.history.back();
+    window.location.href = "Arinchai_dashboard_prototype.html";
 }
+
+// Initial setup on load
+window.addEventListener('DOMContentLoaded', () => {
+    // Set date input to today
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+    }
+    switchPersona(currentPersona);
+});
 </script>
 
 </body>
