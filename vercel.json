@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/prototypes/sprint1/Arinchai_dashboard_prototype.html" }
+  ]
+}
