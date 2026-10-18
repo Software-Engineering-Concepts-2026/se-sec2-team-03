@@ -11,21 +11,23 @@ DaybyDay เป็นเว็บแอปพลิเคชันสำหร�
 
 ---
 
-## 🌐 Live Demo & Deployment (Vercel)
+## 🌐 Live Demo & Deployment (Render)
 
-🔗 **Vercel URL:** [👉 คลิกที่นี่เพื่อเปิดใช้งานบน Vercel (ใส่ลิงก์ Vercel ของคุณที่นี่) 👈](https://your-project.vercel.app)
+🔗 **Render URL:** [👉 คลิกที่นี่เพื่อเปิดใช้งานบน Render 👈](https://se-sec2-team-03-daybyday.onrender.com)
 
 > [!NOTE]
 > คุณสามารถเปิดเข้าใช้งานหน้าเว็บต้นแบบ (Prototypes) แต่ละหน้าได้โดยตรง:
-> - 📊 **แดชบอร์ดภาพรวม:** `[Vercel-URL]/prototypes/sprint1/Arinchai_dashboard_prototype.html`
-> - 💰 **บันทึกรายจ่าย:** `[Vercel-URL]/prototypes/sprint1/Thanapat_RecordExpenses_prototype.html`
-> - ✅ **จัดการงาน / เพิ่มงาน:** `[Vercel-URL]/prototypes/sprint1/Salintip_AddTask_prototype.html`
+>
+> - 📊 **แดชบอร์ดภาพรวม:** [เปิดหน้าแดชบอร์ด](https://se-sec2-team-03-daybyday.onrender.com/Arinchai_dashboard_prototype.html)
+> - 💰 **บันทึกรายจ่าย:** [เปิดหน้าบันทึกรายจ่าย](https://se-sec2-team-03-daybyday.onrender.com/Thanapat_RecordExpenses_prototype.html)
+> - ✅ **จัดการงาน / เพิ่มงาน:** [เปิดหน้าจัดการงาน](https://se-sec2-team-03-daybyday.onrender.com/Salintip_AddTask_prototype.html)
 
 ---
 
 ## 📌 สรุปความคืบหน้าและสิ่งที่ทำไปแล้ว (What We've Done)
 
 ### 1. ระบบเว็บต้นแบบที่เชื่อมโยงถึงกัน (Sprint 1 Interactive Prototypes)
+
 - [x] **แดชบอร์ดภาพรวมชีวิตและการเงิน ([`Arinchai_dashboard_prototype.html`](./prototypes/sprint1/Arinchai_dashboard_prototype.html)):**
   - แสดงยอดสรุปคงเหลือ, รายรับ, และรายจ่ายประจำเดือน
   - กราฟแนวโน้มรายสัปดาห์แบบไดนามิก ปรับตามการใช้จ่ายจริง
@@ -45,6 +47,7 @@ DaybyDay เป็นเว็บแอปพลิเคชันสำหร�
   - รองรับ **Persona Switcher** สลับระหว่าง **คุณกิตติศักดิ์ (Project Manager)** และ **คุณอิศรา (นักศึกษา & บาริสต้า)** โดยแยกยอดเงิน ธุรกรรม งาน และเป้าหมายของแต่ละบุคคลอย่างชัดเจน
 
 ### 2. สถาปัตยกรรมระบบและการทดสอบ (Backend, Testing & CI/CD)
+
 - [x] **Stats Service API:** พัฒนาด้วย FastAPI สำหรับคำนวณและประมวลผลข้อมูล
 - [x] **Safety Net Test Suite:** ชุดทดสอบ Unit Tests ตามหลัก AAA Pattern (Happy Path, Boundary, Error Cases) รวม 35/35 Tests ผ่านทั้งหมด
 - [x] **Docker Containerization:** จัดทำ `Dockerfile` สำหรับ Build และ Run แอปพลิเคชันทั้งฝั่ง API และ Web Prototype
@@ -72,6 +75,7 @@ This section explains how to get a local copy of the project up and running for 
     ```
 
 2.  **Run the services:**
+
     ```bash
     # Build Docker Image from Root
     docker build -t thanapat2103/stats-service-api:v0.1.0 .
@@ -79,6 +83,7 @@ This section explains how to get a local copy of the project up and running for 
     # Run API Server & Web App Prototype
     docker run --rm -p 8000:8000 thanapat2103/stats-service-api:v0.1.0
     ```
+
     - API Documentation: http://localhost:8000/docs
     - Expenses Prototype: http://localhost:8000/expenses (หรือ http://localhost:8000/prototypes/sprint1/Thanapat_RecordExpenses_prototype.html)
 
@@ -185,8 +190,6 @@ User personas and key scenarios that drive our development are located in the `/
 
 ## โครงสร้าง Branch
 
-
-
 ```text
 feature/<feature-name>
 bugfix/<issue-name>
@@ -240,7 +243,7 @@ docs: อัปเดตเอกสาร API
 3. Push ขึ้น Repository
 4. สร้าง Pull Request ไปยัง `main`
 5. ขอ Code Review จากสมาชิกในทีมอย่างน้อย 1 คน
-6. เมื่อผ่านการ Review ให้กด Squash and Merge เข้า `main` 
+6. เมื่อผ่านการ Review ให้กด Squash and Merge เข้า `main`
 
 ---
 
