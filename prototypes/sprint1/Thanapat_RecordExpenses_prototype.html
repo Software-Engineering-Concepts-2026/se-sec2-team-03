@@ -116,27 +116,11 @@
                 <th>รายการ</th>
                 <th>หมวดหมู่</th>
                 <th>จำนวนเงิน</th>
+                <th style="width: 50px; text-align: center;">จัดการ</th>
               </tr>
             </thead>
             <tbody id='historyBody'>
-              <tr>
-                <td>วันนี้</td>
-                <td>ค่าข้าวเที่ยง</td>
-                <td>อาหาร</td>
-                <td class="amount negative">-฿ 85.00</td>
-              </tr>
-              <tr>
-                <td>เมื่อวาน</td>
-                <td>ค่าโดยสาร BTS</td>
-                <td>เดินทาง</td>
-                <td class="amount negative">-฿ 45.00</td>
-              </tr>
-              <tr>
-                <td>2 วันก่อน</td>
-                <td>ซื้ออุปกรณ์</td>
-                <td>ช้อปปิ้ง</td>
-                <td class="amount negative">-฿ 320.00</td>
-              </tr>
+              <!-- Dynamically rendered by JS from DayByDay -->
             </tbody>
           </table>
         </section>
@@ -144,8 +128,8 @@
 
       <aside class="sidebar right-sidebar">
         <div class="form-toolbar">
-          <button class="ghost-btn">✕ ยกเลิก</button>
-          <button class="primary-btn">✓ บันทึก</button>
+          <button class="ghost-btn" id="cancelExpenseBtn">✕ ยกเลิก</button>
+          <button class="primary-btn" id="saveExpenseBtn">✓ บันทึก</button>
         </div>
 
         <label class="field">
@@ -167,12 +151,12 @@
 
         <label class="field">
           <span>วันที่</span>
-          <input type="date" value="2026-07-08" />
+          <input id="dateInput" type="date" value="" />
         </label>
 
         <label class="field">
           <span>บันทึก</span>
-          <textarea placeholder="ค่าข้าวเที่ยง"></textarea>
+          <textarea id="noteInput" placeholder="เช่น ค่าข้าวเที่ยง, กาแฟ, รถไฟฟ้า"></textarea>
         </label>
 
         <div class="keypad">
@@ -192,6 +176,8 @@
       </aside>
     </div>
 
+    <!-- Data Layer and Controller JS -->
+    <script src="daybyday_data.js"></script>
     <script src="Thanapat_RecordExpenses.js"></script>
   </body>
 </html>

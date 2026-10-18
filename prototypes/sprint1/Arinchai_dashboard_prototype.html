@@ -90,7 +90,7 @@
           <!-- 2. งานประจำวัน (Daily Tasks) เชื่อมโยงกับ Salintip_AddTask -->
           <section class="summary-card">
             <div class="section-title">
-              <h3><span>✅</span> ภารกิจประจำวัน</h3>
+              <h3><span>✅</span> ภารกิจประจำวัน <span id="task-counter" style="font-size:0.75rem; font-weight:normal; color:var(--muted); margin-left:4px;"></span></h3>
               <a href="Salintip_AddTask_prototype.html" class="action-link-btn">+ เพิ่มงาน</a>
             </div>
             <div class="task-list" id="task-list">
@@ -208,7 +208,8 @@
       
     </div>
 
-    <!-- เชื่อมต่อไฟล์ JavaScript -->
+    <!-- เชื่อมต่อไฟล์ข้อมูลส่วนกลางและ JavaScript -->
+    <script src="daybyday_data.js"></script>
     <script src="Arinchai_dashboard.js"></script>
   </body>
 </html>

@@ -1,101 +1,167 @@
 /**
  * Expense Tracker Dashboard - Interactive Logic
  * File: Thanapat_RecordExpenses.js
- * Connects with Thanapat_RecordExpenses_prototype.html and Thanapat_RecordExpenses_style.css
+ * Connects with Thanapat_RecordExpenses_prototype.html and DayByDay central data layer
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  if (typeof DayByDay === 'undefined') {
+    console.error('DayByDay data layer is missing!');
+    return;
+  }
+
   // --- DOM Element References ---
   const amountInput = document.getElementById('amountInput');
-  const dateInput = document.querySelector('input[type="date"]');
-  const noteInput = document.querySelector('textarea');
-  const saveBtn = document.querySelector('.primary-btn');
-  const cancelBtn = document.querySelector('.ghost-btn');
+  const dateInput = document.getElementById('dateInput') || document.querySelector('input[type="date"]');
+  const noteInput = document.getElementById('noteInput') || document.querySelector('textarea');
+  const saveBtn = document.getElementById('saveExpenseBtn') || document.querySelector('.primary-btn');
+  const cancelBtn = document.getElementById('cancelExpenseBtn') || document.querySelector('.ghost-btn');
   const totalExpenseEl = document.getElementById('totalExpense');
   const historyBody = document.getElementById('historyBody');
   const categoryChips = document.querySelectorAll('.chip');
   const keypadButtons = document.querySelectorAll('.keypad-btn');
   const navItems = document.querySelectorAll('.nav-item');
 
-  // Category mapping to CSS class and default weights
-  const categoryMap = {
-    'อาหาร': { class: 'food', icon: '🍽️', baseAmt: 4500 },
-    'เดินทาง': { class: 'travel', icon: '🚇', baseAmt: 2200 },
-    'ช้อปปิ้ง': { class: 'shopping', icon: '🛍️', baseAmt: 3100 },
-    'บ้าน': { class: 'home', icon: '🏠', baseAmt: 1500 },
-    'บันเทิง': { class: 'fun', icon: '🎬', baseAmt: 2000 },
-    'อื่นๆ': { class: 'other', icon: '📦', baseAmt: 800 }
-  };
-
-  // --- Initial State Management ---
-  const STORAGE_KEY_TRANSACTIONS = 'expense_tracker_transactions';
-  const STORAGE_KEY_TOTAL = 'expense_tracker_total';
-  const STORAGE_KEY_CATEGORIES = 'expense_tracker_category_totals';
-  const STORAGE_KEY_PERSONA = 'daybyday_current_persona';
-
-  let currentPersona = localStorage.getItem(STORAGE_KEY_PERSONA) || 'persona1';
-
-  const personaMeta = {
-    persona1: {
-      name: 'กิตติศักดิ์ ชัยวงศ์ (กิต)',
-      role: '👔 พนักงานออฟฟิศ (PM)',
-      avatar: 'img/Image%20(1).jpg'
-    },
-    persona2: {
-      name: 'อิศรา ศรีจำปา (อิ๋ม)',
-      role: '🎓 นักศึกษา & บาริสต้า',
-      avatar: 'img/Image.jpg'
-    }
-  };
-
-  const updatePersonaDisplay = (pId) => {
-    currentPersona = pId;
-    localStorage.setItem(STORAGE_KEY_PERSONA, pId);
-    const meta = personaMeta[pId] || personaMeta.persona1;
-    const avatarEl = document.getElementById('expense-avatar');
-    const nameEl = document.getElementById('expense-persona-name');
-    const roleEl = document.getElementById('expense-persona-role');
-    const btn1 = document.getElementById('btn-expense-persona-1');
-    const btn2 = document.getElementById('btn-expense-persona-2');
-    if (avatarEl) avatarEl.src = decodeURIComponent(meta.avatar);
-    if (nameEl) nameEl.textContent = `บันทึกรายจ่าย: ${meta.name}`;
-    if (roleEl) roleEl.textContent = meta.role;
-    if (btn1) btn1.classList.toggle('active', pId === 'persona1');
-    if (btn2) btn2.classList.toggle('active', pId === 'persona2');
-  };
-
   const btnP1 = document.getElementById('btn-expense-persona-1');
   const btnP2 = document.getElementById('btn-expense-persona-2');
-  if (btnP1) btnP1.addEventListener('click', () => updatePersonaDisplay('persona1'));
-  if (btnP2) btnP2.addEventListener('click', () => updatePersonaDisplay('persona2'));
+  const avatarEl = document.getElementById('expense-avatar');
+  const nameEl = document.getElementById('expense-persona-name');
+  const roleEl = document.getElementById('expense-persona-role');
 
-  let currentCategoryTotals = {};
-  let totalExpense = 12500.00;
+  // Category mapping to chart CSS classes
+  const categoryMap = {
+    'อาหาร': { class: 'food', icon: '🍽️' },
+    'เดินทาง': { class: 'travel', icon: '🚇' },
+    'ช้อปปิ้ง': { class: 'shopping', icon: '🛍️' },
+    'บ้าน': { class: 'home', icon: '🏠' },
+    'บันเทิง': { class: 'fun', icon: '🎬' },
+    'อื่นๆ': { class: 'other', icon: '📦' }
+  };
 
-  // Initialize Date Input to Today (YYYY-MM-DD)
+  let currentPersona = DayByDay.getCurrentPersona();
+
+  // Initialize Date Input to Today
   const setTodayDate = () => {
     if (dateInput) {
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0');
-      const dd = String(today.getDate()).padStart(2, '0');
-      dateInput.value = `${yyyy}-${mm}-${dd}`;
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
     }
   };
 
-  // Format currency helper
-  const formatCurrency = (num) => {
-    return '฿ ' + Number(num).toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  };
-
-  // Extract category clean name from chip text (removes emoji)
+  // Get selected category name (removes emoji)
   const getSelectedCategoryName = () => {
     const activeChip = document.querySelector('.chip.active');
     if (!activeChip) return 'อาหาร';
     return activeChip.textContent.replace(/^[^\s]+\s*/, '').trim();
+  };
+
+  // --- Render Persona Profile & Overview ---
+  const renderPage = (personaId) => {
+    currentPersona = personaId;
+    const meta = DayByDay.getPersonaDetails(personaId);
+
+    // Update left sidebar buttons
+    if (btnP1) btnP1.classList.toggle('active', personaId === 'persona1');
+    if (btnP2) btnP2.classList.toggle('active', personaId === 'persona2');
+
+    // Update hero banner
+    if (avatarEl) {
+      avatarEl.src = decodeURIComponent(meta.avatar);
+      avatarEl.alt = meta.name;
+    }
+    if (nameEl) nameEl.textContent = `บันทึกรายจ่าย: ${meta.name}`;
+    if (roleEl) roleEl.textContent = meta.role;
+
+    // Update Total Expense Card
+    const fin = DayByDay.getFinance(personaId);
+    if (totalExpenseEl) {
+      totalExpenseEl.textContent = DayByDay.formatCurrency(fin.expense);
+    }
+
+    // Update Chart
+    updateCategoryChart(personaId);
+
+    // Update Transactions Table
+    renderTransactionsTable(personaId);
+  };
+
+  // --- Update Category Bar Chart ---
+  const updateCategoryChart = (personaId) => {
+    const totals = DayByDay.getCategoryTotals(personaId);
+    const values = Object.values(totals);
+    const maxVal = Math.max(...values, 2000);
+
+    Object.keys(categoryMap).forEach((catName) => {
+      const config = categoryMap[catName];
+      const bar = document.querySelector(`.bar.${config.class}`);
+      if (bar) {
+        const catAmount = totals[catName] || 0;
+        const percentage = Math.min(Math.max(Math.round((catAmount / maxVal) * 100), 16), 100);
+        bar.style.height = `${percentage}%`;
+        bar.title = `${catName}: ${DayByDay.formatCurrency(catAmount)}`;
+      }
+    });
+  };
+
+  // --- Render Transactions History Table ---
+  const renderTransactionsTable = (personaId) => {
+    if (!historyBody) return;
+    const txs = DayByDay.getTransactions(personaId);
+
+    if (txs.length === 0) {
+      historyBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; color: var(--muted); padding: 24px;">
+            ยังไม่มีรายการบันทึก กรอกข้อมูลด้านขวาเพื่อบันทึกรายการแรก
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    historyBody.innerHTML = txs.map(tx => {
+      const isExpense = tx.type !== 'income';
+      const amountClass = isExpense ? 'amount negative' : 'amount';
+      const prefix = isExpense ? '-' : '+';
+      const amountStyle = isExpense ? 'color: var(--danger); font-weight: 700;' : 'color: #10b981; font-weight: 700;';
+
+      return `
+        <tr data-id="${tx.id}">
+          <td>${tx.displayDate || tx.date}</td>
+          <td style="font-weight: 500;">${tx.note}</td>
+          <td><span style="font-size: 0.85rem; padding: 2px 8px; border-radius: 6px; background: #f3f4f6;">${tx.category}</span></td>
+          <td class="${amountClass}" style="${amountStyle}">${prefix}${DayByDay.formatCurrency(tx.amount)}</td>
+          <td style="text-align: center;">
+            <button class="delete-tx-btn" data-id="${tx.id}" title="ลบรายการนี้" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 0.95rem; padding: 4px; border-radius: 4px; transition: color 0.15s ease;">
+              🗑️
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Attach delete handlers
+    historyBody.querySelectorAll('.delete-tx-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const txId = e.currentTarget.dataset.id;
+        if (confirm('คุณต้องการลบรายการนี้ใช่หรือไม่? ยอดเงินจะถูกคำนวณคืนอัตโนมัติ')) {
+          DayByDay.deleteTransaction(txId, currentPersona);
+          renderPage(currentPersona);
+          DayByDay.showToast('ลบรายการและปรับปรุงยอดเงินเรียบร้อยแล้ว');
+        }
+      });
+    });
+  };
+
+  // --- Reset Form Helper ---
+  const resetForm = () => {
+    if (amountInput) amountInput.value = '0.00';
+    if (noteInput) noteInput.value = '';
+    setTodayDate();
+    categoryChips.forEach((c, idx) => {
+      if (idx === 0) c.classList.add('active');
+      else c.classList.remove('active');
+    });
   };
 
   // --- Category Chips Selection ---
@@ -107,18 +173,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Navigation Links Active Toggle ---
-  navItems.forEach((nav) => {
-    nav.addEventListener('click', (e) => {
-      const href = nav.getAttribute('href');
-      if (!href || href === '#') {
-        e.preventDefault();
-        navItems.forEach((item) => item.classList.remove('active'));
-        nav.classList.add('active');
-      }
-      // If href has a valid URL/file path, allow the browser to navigate normally
+  // --- Persona Switch Handlers ---
+  if (btnP1) {
+    btnP1.addEventListener('click', () => {
+      currentPersona = 'persona1';
+      DayByDay.setCurrentPersona('persona1');
+      renderPage(currentPersona);
+      DayByDay.showToast('สลับมุมมองผู้ใช้เป็น: คุณกิตติศักดิ์ (Project Manager)');
     });
-  });
+  }
+
+  if (btnP2) {
+    btnP2.addEventListener('click', () => {
+      currentPersona = 'persona2';
+      DayByDay.setCurrentPersona('persona2');
+      renderPage(currentPersona);
+      DayByDay.showToast('สลับมุมมองผู้ใช้เป็น: คุณอิศรา (นักศึกษา & บาริสต้า)');
+    });
+  }
 
   // --- Keypad and Amount Input Handling ---
   keypadButtons.forEach((btn) => {
@@ -130,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let currentVal = amountInput.value.trim();
 
       if (action === 'backspace') {
-        if (currentVal.length <= 1 || currentVal === '0.00') {
+        if (currentVal.length <= 1 || currentVal === '0.00' || currentVal === '0') {
           amountInput.value = '0.00';
         } else {
           amountInput.value = currentVal.slice(0, -1);
@@ -147,9 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } else {
           if (value === '.' && currentVal.includes('.')) {
-            return; // Prevent duplicate decimal points
+            return;
           }
-          // Limit to two decimal places
           if (currentVal.includes('.')) {
             const parts = currentVal.split('.');
             if (parts[1] && parts[1].length >= 2) {
@@ -162,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Format amount input on blur
+  // Format amount input on focus and blur
   if (amountInput) {
     amountInput.addEventListener('focus', () => {
       if (amountInput.value === '0.00') {
@@ -180,46 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Chart Update Function ---
-  const updateBarChart = () => {
-    const values = Object.values(currentCategoryTotals);
-    const maxVal = Math.max(...values, 5000);
-
-    Object.keys(categoryMap).forEach((catName) => {
-      const config = categoryMap[catName];
-      const bar = document.querySelector(`.bar.${config.class}`);
-      if (bar) {
-        const catAmount = currentCategoryTotals[catName] || 0;
-        const percentage = Math.min(Math.max(Math.round((catAmount / maxVal) * 100), 18), 100);
-        bar.style.height = `${percentage}%`;
-        bar.title = `${catName}: ${formatCurrency(catAmount)}`;
-      }
-    });
-  };
-
-  // --- Reset Form Helper ---
-  const resetForm = () => {
-    if (amountInput) amountInput.value = '0.00';
-    if (noteInput) noteInput.value = '';
-    setTodayDate();
-    categoryChips.forEach((c, idx) => {
-      if (idx === 0) c.classList.add('active');
-      else c.classList.remove('active');
-    });
-  };
-
-  // --- Add Transaction to DOM Table ---
-  const prependTransactionRow = (dateText, noteText, categoryText, amountVal) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${dateText}</td>
-      <td>${noteText}</td>
-      <td>${categoryText}</td>
-      <td class="amount negative">-${formatCurrency(amountVal)}</td>
-    `;
-    historyBody.prepend(tr);
-  };
-
   // --- Save Transaction Handler ---
   const handleSave = (e) => {
     if (e) e.preventDefault();
@@ -230,132 +261,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const category = getSelectedCategoryName();
 
     if (isNaN(rawAmount) || rawAmount <= 0) {
-      alert('กรุณาระบุจำนวนเงินที่มากกว่า 0');
+      DayByDay.showToast('กรุณาระบุจำนวนเงินที่มากกว่า 0', false);
       amountInput.focus();
       return;
     }
 
-    if (!note) {
-      alert('กรุณากรอกรายละเอียดบันทึกรายการ');
-      if (noteInput) noteInput.focus();
-      return;
+    // Default note gracefully if left empty
+    const finalNote = note || `ค่า${category}`;
+
+    // Add to central DayByDay layer
+    const newTx = DayByDay.addTransaction({
+      persona: currentPersona,
+      type: 'expense',
+      category: category,
+      amount: rawAmount,
+      note: finalNote,
+      date: dateVal || new Date().toISOString().split('T')[0]
+    });
+
+    if (newTx) {
+      resetForm();
+      renderPage(currentPersona);
+      DayByDay.showToast(`บันทึกรายจ่าย ${DayByDay.formatCurrency(rawAmount)} หมวด "${category}" สำเร็จ!`);
     }
-
-    if (!dateVal) {
-      alert('กรุณาเลือกวันที่');
-      return;
-    }
-
-    // Format date display (e.g. วันนี้, or formatted date)
-    const todayStr = new Date().toISOString().split('T')[0];
-    let dateDisplay = dateVal;
-    if (dateVal === todayStr) {
-      dateDisplay = 'วันนี้';
-    }
-
-    // Prepend row
-    prependTransactionRow(dateDisplay, note, category, rawAmount);
-
-    // Update totals
-    totalExpense += rawAmount;
-    if (totalExpenseEl) {
-      totalExpenseEl.textContent = formatCurrency(totalExpense);
-    }
-
-    // Update category breakdown
-    currentCategoryTotals[category] = (currentCategoryTotals[category] || 0) + rawAmount;
-    updateBarChart();
-
-    // Persist to LocalStorage
-    saveStateToStorage();
-
-    // Reset input fields
-    resetForm();
-
-    // Visual feedback
-    showFeedback('✓ บันทึกรายจ่ายสำเร็จ!');
-  };
-
-  // --- Feedback Toast Notification ---
-  const showFeedback = (message) => {
-    let toast = document.getElementById('expense-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'expense-toast';
-      toast.style.cssText = `
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: #10b981;
-        color: #ffffff;
-        padding: 12px 20px;
-        border-radius: 12px;
-        font-weight: 600;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        z-index: 9999;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        opacity: 0;
-        transform: translateY(10px);
-      `;
-      document.body.appendChild(toast);
-    }
-
-    toast.textContent = message;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateY(0)';
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(10px)';
-    }, 2000);
-  };
-
-  // --- LocalStorage Helpers ---
-  const saveStateToStorage = () => {
-    try {
-      localStorage.setItem(STORAGE_KEY_TOTAL, totalExpense.toString());
-      localStorage.setItem(STORAGE_KEY_CATEGORIES, JSON.stringify(currentCategoryTotals));
-      if (historyBody) {
-        localStorage.setItem(STORAGE_KEY_TRANSACTIONS, historyBody.innerHTML);
-      }
-    } catch (err) {
-      console.warn('LocalStorage save error:', err);
-    }
-  };
-
-  const loadStateFromStorage = () => {
-    try {
-      const savedTotal = localStorage.getItem(STORAGE_KEY_TOTAL);
-      if (savedTotal !== null) {
-        totalExpense = parseFloat(savedTotal);
-        if (totalExpenseEl) {
-          totalExpenseEl.textContent = formatCurrency(totalExpense);
-        }
-      }
-
-      const savedCategories = localStorage.getItem(STORAGE_KEY_CATEGORIES);
-      if (savedCategories) {
-        currentCategoryTotals = JSON.parse(savedCategories);
-      } else {
-        // Initial mock breakdown
-        Object.keys(categoryMap).forEach((key) => {
-          currentCategoryTotals[key] = categoryMap[key].baseAmt;
-        });
-      }
-
-      const savedRows = localStorage.getItem(STORAGE_KEY_TRANSACTIONS);
-      if (savedRows && historyBody) {
-        historyBody.innerHTML = savedRows;
-      }
-    } catch (err) {
-      console.warn('LocalStorage load error:', err);
-      // Fallback
-      Object.keys(categoryMap).forEach((key) => {
-        currentCategoryTotals[key] = categoryMap[key].baseAmt;
-      });
-    }
-
-    updateBarChart();
   };
 
   // --- Event Listeners Attachment ---
@@ -367,11 +295,28 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelBtn.addEventListener('click', (e) => {
       e.preventDefault();
       resetForm();
+      DayByDay.showToast('ยกเลิกรายการแล้ว');
     });
   }
 
-  // Initialize application
+  // --- Global Event Sync Listeners ---
+  window.addEventListener('daybyday:data-updated', () => {
+    renderPage(currentPersona);
+  });
+
+  window.addEventListener('daybyday:persona-changed', (e) => {
+    if (e.detail && e.detail.persona) {
+      currentPersona = e.detail.persona;
+      renderPage(currentPersona);
+    }
+  });
+
+  window.addEventListener('storage', () => {
+    currentPersona = DayByDay.getCurrentPersona();
+    renderPage(currentPersona);
+  });
+
+  // Initialize
   setTodayDate();
-  loadStateFromStorage();
-  updatePersonaDisplay(currentPersona);
+  renderPage(currentPersona);
 });

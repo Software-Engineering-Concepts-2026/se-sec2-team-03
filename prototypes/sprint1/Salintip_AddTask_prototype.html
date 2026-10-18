@@ -139,47 +139,25 @@
 
 </div>
 
+<!-- Data Layer -->
+<script src="daybyday_data.js"></script>
+
 <script>
-const STORAGE_KEY_PERSONA = 'daybyday_current_persona';
-const STORAGE_KEY_TASKS = 'daybyday_tasks';
-
-let currentPersona = localStorage.getItem(STORAGE_KEY_PERSONA) || 'persona1';
-
-const personaDetails = {
-    persona1: {
-        name: 'กิตติศักดิ์ ชัยวงศ์ (กิต)',
-        role: 'พนักงานออฟฟิศ (PM)',
-        defaultTasks: [
-            { text: 'ตรวจเช็ค Sprint Review ของทีม Dev', category: 'งานโปรเจกต์', importance: 'high' },
-            { text: 'ประชุมสรุปแผนงานลดเวลา OT รายสัปดาห์', category: 'งานโปรเจกต์', importance: 'medium' },
-            { text: 'พาภรรยาและลูกสาวไปซื้อของเข้าบ้าน', category: 'ครอบครัว', importance: 'low' },
-            { text: 'วิ่งเบิร์นแคลอรี่ 30 นาที (เป้าลดน้ำหนัก)', category: 'สุขภาพ', importance: 'medium' }
-        ]
-    },
-    persona2: {
-        name: 'อิศรา ศรีจำปา (อิ๋ม)',
-        role: 'นักศึกษา & บาริสต้า',
-        defaultTasks: [
-            { text: 'ทบทวนคอร์ส Data Analytics และทำสรุป', category: 'การเรียน', importance: 'high' },
-            { text: 'อ่านเอกสารวิจัยเตรียมส่งตีพิมพ์ 15 หน้า', category: 'การเรียน', importance: 'high' },
-            { text: 'เข้ากะบาริสต้าที่ร้านกาแฟใน มอฯ', category: 'งานพิเศษ', importance: 'medium' },
-            { text: 'ทำ Reflection บันทึกเป้าหมายก่อนนอน 30 นาที', category: 'ส่วนตัว', importance: 'low' }
-        ]
-    }
-};
+let currentPersona = DayByDay.getCurrentPersona();
 
 function switchPersona(pId) {
     currentPersona = pId;
-    localStorage.setItem(STORAGE_KEY_PERSONA, pId);
+    DayByDay.setCurrentPersona(pId);
 
     const btn1 = document.getElementById('btn-task-p1');
     const btn2 = document.getElementById('btn-task-p2');
     if (btn1) btn1.classList.toggle('active', pId === 'persona1');
     if (btn2) btn2.classList.toggle('active', pId === 'persona2');
 
+    const meta = DayByDay.getPersonaDetails(pId);
     const badge = document.getElementById('persona-badge-indicator');
     if (badge) {
-        badge.textContent = `กำลังเพิ่มงานสำหรับ: ${personaDetails[pId].name}`;
+        badge.textContent = `กำลังเพิ่มงานสำหรับ: ${meta.name}`;
     }
 
     renderTaskPreview();
@@ -189,49 +167,60 @@ function renderTaskPreview() {
     const listEl = document.getElementById('task-preview-list');
     if (!listEl) return;
 
-    let saved = [];
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY_TASKS);
-        saved = raw ? JSON.parse(raw) : [];
-    } catch(e) {}
+    const tasks = DayByDay.getTasks(currentPersona);
 
-    const personaTasks = saved.filter(t => !t.persona || t.persona === currentPersona);
-    const presets = personaDetails[currentPersona].defaultTasks;
+    if (tasks.length === 0) {
+        listEl.innerHTML = `
+            <div style="text-align: center; color: var(--muted); padding: 20px 0; font-size: 0.85rem;">
+                ยังไม่มีภารกิจในระบบ กรอกแบบฟอร์มด้านซ้ายเพื่อเพิ่มงาน
+            </div>
+        `;
+        return;
+    }
 
     let html = '';
-    // Show custom saved tasks first
-    personaTasks.forEach(t => {
+    tasks.forEach(t => {
+        const isCustom = t.isCustom;
+        const borderStyle = isCustom ? 'border-left: 3px solid #6c63ff;' : 'border-left: 3px solid #cbd5e1;';
+        const customBadge = isCustom ? '<span style="font-size:0.75rem; color:#6c63ff; font-weight:600;">เพิ่งเพิ่ม</span>' : '';
+        const doneStyle = t.done ? 'text-decoration: line-through; color: var(--muted);' : 'color: var(--text); font-weight: 500;';
+
         html += `
-            <div class="task-mini-item" style="border-left: 3px solid #6c63ff;">
-                <div class="task-mini-header">
-                    <span>${t.text}</span>
-                    <span style="font-size:0.75rem; color:#6c63ff;">เพิ่งเพิ่ม</span>
+            <div class="task-mini-item" style="${borderStyle} padding: 10px 12px; margin-bottom: 8px; background: #ffffff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);">
+                <div class="task-mini-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; flex: 1; min-width: 0;">
+                        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone('${t.id}', this.checked)" style="accent-color: #6c63ff;">
+                        <span style="${doneStyle} font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.text}</span>
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+                        ${customBadge}
+                        <button onclick="removeTask('${t.id}')" title="ลบงานนี้" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 0.85rem; padding: 2px;">✕</button>
+                    </div>
                 </div>
-                <div class="task-mini-sub">
+                <div class="task-mini-sub" style="font-size: 0.76rem; color: var(--muted); display: flex; gap: 10px; align-items: center;">
                     <span>📁 ${t.category}</span>
                     <span>⚡ ${t.importance || 'medium'}</span>
                     ${t.time ? `<span>⏰ ${t.time}</span>` : ''}
-                </div>
-            </div>
-        `;
-    });
-
-    // Show presets
-    presets.forEach(p => {
-        html += `
-            <div class="task-mini-item">
-                <div class="task-mini-header">
-                    <span>${p.text}</span>
-                </div>
-                <div class="task-mini-sub">
-                    <span>📁 ${p.category}</span>
-                    <span>⚡ ${p.importance}</span>
+                    ${t.date ? `<span>📅 ${t.date}</span>` : ''}
                 </div>
             </div>
         `;
     });
 
     listEl.innerHTML = html;
+}
+
+function toggleTaskDone(taskId, isDone) {
+    DayByDay.toggleTask(taskId, currentPersona, isDone);
+    renderTaskPreview();
+}
+
+function removeTask(taskId) {
+    if (confirm('คุณต้องการลบภารกิจนี้ใช่หรือไม่?')) {
+        DayByDay.deleteTask(taskId, currentPersona);
+        renderTaskPreview();
+        DayByDay.showToast('ลบภารกิจเรียบร้อยแล้ว');
+    }
 }
 
 function saveTask(event) {
@@ -252,42 +241,37 @@ function saveTask(event) {
     const importance = importanceInput ? importanceInput.value : "medium";
 
     if (task === "" || category === "") {
-        alert("กรุณากรอกชื่องานและเลือกหมวดหมู่ให้ครบถ้วน");
+        DayByDay.showToast("กรุณากรอกชื่องานและเลือกหมวดหมู่ให้ครบถ้วน", false);
         if (!task) taskInput.focus();
         else categoryInput.focus();
         return;
     }
 
-    // Save to LocalStorage
-    let existingTasks = [];
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY_TASKS);
-        existingTasks = raw ? JSON.parse(raw) : [];
-    } catch(e) {}
-
-    const newTask = {
-        id: 'task-' + Date.now(),
+    // Add to central DayByDay layer
+    const newTask = DayByDay.addTask({
+        persona: currentPersona,
         text: task,
         description: description,
-        date: date,
-        time: time,
         category: category,
         importance: importance,
-        persona: currentPersona,
-        done: false
-    };
+        date: date,
+        time: time
+    });
 
-    existingTasks.unshift(newTask);
-    localStorage.setItem(STORAGE_KEY_TASKS, JSON.stringify(existingTasks));
+    if (newTask) {
+        // Reset Form
+        taskInput.value = "";
+        descInput.value = "";
+        renderTaskPreview();
 
-    // Reset Form
-    taskInput.value = "";
-    descInput.value = "";
-    renderTaskPreview();
+        DayByDay.showToast(`บันทึกงาน "${task}" สำเร็จเรียบร้อย!`);
 
-    const goToDashboard = confirm(`✓ บันทึกงาน "${task}" สำเร็จเรียบร้อย!\n\nข้อมูลเชื่อมโยงไปยังแดชบอร์ดหลักแล้ว ต้องการกลับไปดูหน้าแดชบอร์ดทันทีหรือไม่?`);
-    if (goToDashboard) {
-        window.location.href = "Arinchai_dashboard_prototype.html";
+        setTimeout(() => {
+            const goToDashboard = confirm(`✓ บันทึกงาน "${task}" สำเร็จเรียบร้อย!\n\nข้อมูลเชื่อมโยงไปยังแดชบอร์ดหลักแล้ว ต้องการกลับไปดูหน้าแดชบอร์ดทันทีหรือไม่?`);
+            if (goToDashboard) {
+                window.location.href = "Arinchai_dashboard_prototype.html";
+            }
+        }, 300);
     }
 }
 
@@ -309,6 +293,22 @@ window.addEventListener('DOMContentLoaded', () => {
         const today = new Date().toISOString().split('T')[0];
         dateInput.value = today;
     }
+    switchPersona(currentPersona);
+});
+
+// Global sync listeners
+window.addEventListener('daybyday:data-updated', () => {
+    renderTaskPreview();
+});
+
+window.addEventListener('daybyday:persona-changed', (e) => {
+    if (e.detail && e.detail.persona) {
+        switchPersona(e.detail.persona);
+    }
+});
+
+window.addEventListener('storage', () => {
+    currentPersona = DayByDay.getCurrentPersona();
     switchPersona(currentPersona);
 });
 </script>
