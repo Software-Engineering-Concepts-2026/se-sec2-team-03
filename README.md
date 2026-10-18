@@ -11,6 +11,47 @@ DaybyDay เป็นเว็บแอปพลิเคชันสำหร�
 
 ---
 
+## 🌐 Live Demo & Deployment (Vercel)
+
+🔗 **Vercel URL:** [👉 คลิกที่นี่เพื่อเปิดใช้งานบน Vercel (ใส่ลิงก์ Vercel ของคุณที่นี่) 👈](https://your-project.vercel.app)
+
+> [!NOTE]
+> คุณสามารถเปิดเข้าใช้งานหน้าเว็บต้นแบบ (Prototypes) แต่ละหน้าได้โดยตรง:
+> - 📊 **แดชบอร์ดภาพรวม:** `[Vercel-URL]/prototypes/sprint1/Arinchai_dashboard_prototype.html`
+> - 💰 **บันทึกรายจ่าย:** `[Vercel-URL]/prototypes/sprint1/Thanapat_RecordExpenses_prototype.html`
+> - ✅ **จัดการงาน / เพิ่มงาน:** `[Vercel-URL]/prototypes/sprint1/Salintip_AddTask_prototype.html`
+
+---
+
+## 📌 สรุปความคืบหน้าและสิ่งที่ทำไปแล้ว (What We've Done)
+
+### 1. ระบบเว็บต้นแบบที่เชื่อมโยงถึงกัน (Sprint 1 Interactive Prototypes)
+- [x] **แดชบอร์ดภาพรวมชีวิตและการเงิน ([`Arinchai_dashboard_prototype.html`](./prototypes/sprint1/Arinchai_dashboard_prototype.html)):**
+  - แสดงยอดสรุปคงเหลือ, รายรับ, และรายจ่ายประจำเดือน
+  - กราฟแนวโน้มรายสัปดาห์แบบไดนามิก ปรับตามการใช้จ่ายจริง
+  - ระบบบันทึกการเงินด่วน (Quick Log) ด้านขวา เพิ่มรายรับ/รายจ่ายได้ทันทีในหน้าเดียว
+  - ระบบภารกิจประจำวัน (Daily Tasks) พร้อม Checkbox ที่จดจำสถานะผ่าน `LocalStorage` ไม่หายเมื่อรีเฟรช และตัวนับงานที่เสร็จแล้ว
+  - การ์ดสรุปข้อมูลสุขภาพ กิจวัตรประจำวัน และความก้าวหน้าเป้าหมายหลัก (Goal Progress Bars)
+- [x] **ระบบบันทึกรายจ่ายแบบละเอียด ([`Thanapat_RecordExpenses_prototype.html`](./prototypes/sprint1/Thanapat_RecordExpenses_prototype.html)):**
+  - รองรับการป้อนจำนวนเงินทั้งการพิมพ์ผ่านคีย์บอร์ดและ Virtual Keypad
+  - กราฟสัดส่วนหมวดหมู่ 6 หมวด (อาหาร, เดินทาง, ช้อปปิ้ง, บ้าน, บันเทิง, อื่นๆ) คำนวณความสูงตามยอดจริง
+  - ตารางประวัติธุรกรรมล่าสุดที่ซิงค์กับ Quick Log ของแดชบอร์ด พร้อมปุ่ม 🗑️ ลบรายการและคืนยอดเงินอัตโนมัติ
+- [x] **ระบบจัดการงานและเพิ่มภารกิจ ([`Salintip_AddTask_prototype.html`](./prototypes/sprint1/Salintip_AddTask_prototype.html)):**
+  - ฟอร์มเพิ่มงานใหม่ กำหนดชื่องาน, รายละเอียด, วันที่, เวลา, หมวดหมู่ และระดับความสำคัญ (Low/Medium/High)
+  - กล่องแสดงรายการงานปัจจุบันและงานที่เพิ่งเพิ่ม พร้อมปุ่มติ๊กถูกและลบงาน
+  - ซิงค์งานที่เพิ่มใหม่ไปยังหน้ารวมแดชบอร์ดหลักทันที
+- [x] **ระบบจัดการข้อมูลกลางและการสลับ Persona ([`daybyday_data.js`](./prototypes/sprint1/daybyday_data.js)):**
+  - ควบคุมการซิงค์ข้อมูลระหว่างทุกหน้าแบบ Real-time ด้วย `LocalStorage` และ Custom Events
+  - รองรับ **Persona Switcher** สลับระหว่าง **คุณกิตติศักดิ์ (Project Manager)** และ **คุณอิศรา (นักศึกษา & บาริสต้า)** โดยแยกยอดเงิน ธุรกรรม งาน และเป้าหมายของแต่ละบุคคลอย่างชัดเจน
+
+### 2. สถาปัตยกรรมระบบและการทดสอบ (Backend, Testing & CI/CD)
+- [x] **Stats Service API:** พัฒนาด้วย FastAPI สำหรับคำนวณและประมวลผลข้อมูล
+- [x] **Safety Net Test Suite:** ชุดทดสอบ Unit Tests ตามหลัก AAA Pattern (Happy Path, Boundary, Error Cases) รวม 35/35 Tests ผ่านทั้งหมด
+- [x] **Docker Containerization:** จัดทำ `Dockerfile` สำหรับ Build และ Run แอปพลิเคชันทั้งฝั่ง API และ Web Prototype
+- [x] **CI/CD Pipeline:** มี GitHub Actions Workflow ตรวจสอบ Lint และ Test อัตโนมัติทุก Pull Request
+
+---
+
 ## 🚀 Getting Started
 
 This section explains how to get a local copy of the project up and running for development and testing purposes.
